@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, 'python_dms/lib/')
+sys.path.insert(0, '../python_dms/lib/')
 
 from dms import *
 from tools_dms import *
@@ -37,22 +37,22 @@ out_Hohm= np.zeros((simul_number,len(tab_std)))
 
 for k in range(len(tab_std)):
     for i in range(simul_number):
-        noised_im1= scipy.io.loadmat('degraded_images/'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat') 
-        im_rec_TROF= scipy.io.loadmat('results/TROF_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
-        cont_rect_TROF= scipy.io.loadmat('results/TROF_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
+        noised_im1= scipy.io.loadmat('../degraded_images/'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat') 
+        im_rec_TROF= scipy.io.loadmat('../results/TROF_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
+        cont_rect_TROF= scipy.io.loadmat('../results/TROF_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
 
-        im_rec_PALM_l1= scipy.io.loadmat('results/PALM_l1_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
-        cont_rect_PALM_l1= scipy.io.loadmat('results/PALM_l1_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
+        im_rec_PALM_l1= scipy.io.loadmat('../results/PALM_l1_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
+        cont_rect_PALM_l1= scipy.io.loadmat('../results/PALM_l1_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
 
 
-        im_rec_PALM_AT_fixed= scipy.io.loadmat('results/PALM_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
-        cont_rect_PALM_AT_fixed= scipy.io.loadmat('results/PALM_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
+        im_rec_PALM_AT_fixed= scipy.io.loadmat('../results/PALM_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
+        cont_rect_PALM_AT_fixed= scipy.io.loadmat('../results/PALM_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
 
-        im_rec_PALM_AT_descent= scipy.io.loadmat('results/PALM-eps-descent_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
-        cont_rect_PALM_AT_descent= scipy.io.loadmat('results/PALM-eps-descent_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
+        im_rec_PALM_AT_descent= scipy.io.loadmat('../results/PALM-eps-descent_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
+        cont_rect_PALM_AT_descent= scipy.io.loadmat('../results/PALM-eps-descent_AT-fourier_'+str(niter)+'_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
 
-        im_rec_Hohm= scipy.io.loadmat('results/Hohm_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
-        cont_rect_Hohm= scipy.io.loadmat('results/Hohm_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
+        im_rec_Hohm= scipy.io.loadmat('../results/Hohm_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['u_rec']
+        cont_rect_Hohm= scipy.io.loadmat('../results/Hohm_'+name+'_'+'noise'+'_'+str(tab_std[k])+'_'+'blur'+'_'+str(size_blur)+'_'+str(std_blur)+'_'+str(simul_number)+'.mat')['e_rec']
 
 
 

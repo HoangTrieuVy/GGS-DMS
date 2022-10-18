@@ -27,28 +27,28 @@ def trof_ggs(namefile,mit=300):
 
     scipy.io.savemat('../results/'+'TROF'+'_'+str(mit)+'_'+namefile+'.mat', dict(u_rec=im_rec_TROF,e_rec=cont_rect_TROF))
 
-#namefile = '124084_noise_0.05_blur_1_1_1'
-#trof_ggs(namefile)
-#
-#
-#namefile = '35010_noise_0.05_blur_1_1_1'
-#trof_ggs(namefile)
-#
-#
-#namefile = '65019_noise_0.05_blur_1_1_1'
-#trof_ggs(namefile)
-#
-#namefile = '118035_noise_0.05_blur_1_1_1'
-#trof_ggs(namefile)
-#
-#
-#namefile = '35008_noise_0.05_blur_1_1_1'
-#trof_ggs(namefile)
-#
-#
-#namefile = '24004_noise_0.05_blur_1_1_1'
-#trof_ggs(namefile)
-#
+namefile = '124084_noise_0.05_blur_1_1_1'
+trof_ggs(namefile)
+
+
+namefile = '35010_noise_0.05_blur_1_1_1'
+trof_ggs(namefile)
+
+
+namefile = '65019_noise_0.05_blur_1_1_1'
+trof_ggs(namefile)
+
+namefile = '118035_noise_0.05_blur_1_1_1'
+trof_ggs(namefile)
+
+
+namefile = '35008_noise_0.05_blur_1_1_1'
+trof_ggs(namefile)
+
+
+namefile = '24004_noise_0.05_blur_1_1_1'
+trof_ggs(namefile)
+
 namefile = '12003_noise_0.05_blur_1_1_1'
 trof_ggs(namefile)
 

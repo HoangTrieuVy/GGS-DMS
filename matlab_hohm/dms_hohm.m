@@ -1,5 +1,5 @@
 function dms_hohm(namefile)
-load(['degraded_images/',namefile,'.mat']);
+load(['../degraded_images/',namefile,'.mat']);
 
 [m,n] = size(f);
 opts.verbose = 1;
@@ -46,4 +46,4 @@ proxHandle = makeProxL2Linop( fNoisy, A);
 u_rec = mumfordShah2D(gamma_axis_curr(ind_gamma), alpha_axis_curr(ind_alpha), proxHandle, opts);
 e_rec = ones([m,n,2]).*(D(u_rec).^2 > (gamma_axis_curr(ind_gamma)/alpha_axis_curr(ind_alpha)));
 fprintf('Hohm:\t\t\t\t SNR = %3.2f\t SSIM=%3.2f\t jaccard=%3.3f\n',plpsnr(f*255,u_rec*255),ssim(f*255,u_rec*255),jaccard(e_rec,e_exacte));
-save(['results/Hohm_',namefile,'.mat'],'u_rec','e_rec')
+save(['../results/Hohm_',namefile,'.mat'],'u_rec','e_rec')

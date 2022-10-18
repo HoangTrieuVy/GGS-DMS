@@ -44,26 +44,26 @@ namefile = '12003_noise_0.05_blur_1_1_1'
 dms(namefile,method='PALM',normtype='l1')#CT 1067
 dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.) #CT 61770
 
-# namefile = '124084_noise_0.05_blur_1_1_1'
-# dms(namefile,method='PALM',normtype='l1')#CT 1112
-# dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 57555
+namefile = '124084_noise_0.05_blur_1_1_1'
+dms(namefile,method='PALM',normtype='l1')#CT 1112
+dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 57555
 
-# namefile = '35010_noise_0.05_blur_1_1_1'
-# dms(namefile,method='PALM',normtype='l1')#CT 988
-# dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 49888
+namefile = '35010_noise_0.05_blur_1_1_1'
+dms(namefile,method='PALM',normtype='l1')#CT 988
+dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 49888
 
-# namefile = '65019_noise_0.05_blur_1_1_1'
-# dms(namefile,method='PALM',normtype='l1')#CT 1222
-# dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 60059
+namefile = '65019_noise_0.05_blur_1_1_1'
+dms(namefile,method='PALM',normtype='l1')#CT 1222
+dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 60059
 
-# namefile = '118035_noise_0.05_blur_1_1_1'
-# dms(namefile,method='PALM',normtype='l1')#CT 1221
-# dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 59009
+namefile = '118035_noise_0.05_blur_1_1_1'
+dms(namefile,method='PALM',normtype='l1')#CT 1221
+dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 59009
 
-# namefile = '35008_noise_0.05_blur_1_1_1'
-# dms(namefile,method='PALM',normtype='l1')#CT 1002
-# dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 52992
+namefile = '35008_noise_0.05_blur_1_1_1'
+dms(namefile,method='PALM',normtype='l1')#CT 1002
+dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 52992
 
-# namefile = '24004_noise_0.05_blur_1_1_1'
-# dms(namefile,method='PALM',normtype='l1')#CT 1099
-# dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 51002
+namefile = '24004_noise_0.05_blur_1_1_1'
+dms(namefile,method='PALM',normtype='l1')#CT 1099
+dms(namefile,method='PALM-eps-descent',normtype='AT-fourier',eps=2.)#CT 51002

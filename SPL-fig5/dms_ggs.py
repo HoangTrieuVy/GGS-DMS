@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, 'lib/')
+sys.path.insert(0, '../python_dms/lib/')
 
 from dms import *
 from tools_dms import *
@@ -11,10 +11,6 @@ from skimage.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 import scipy.io
 
-# namefile = 'dots_52_v3_noise_0.05_blur_1_2_1'
-# namefile = 'dots_52_v3_noise_0.02_blur_3_2_1'
-# namefile = 'dots_52_v3_noise_0.08_blur_3_2_1'
-# namefile = 'dots_52_v3_noise_0.08_blur_11_1_1'
 
 def dms(namefile,method,normtype,mit=300,eps=2.):
     degraded_data=  scipy.io.loadmat('../degraded_images/'+namefile+'.mat')
@@ -26,16 +22,15 @@ def dms(namefile,method,normtype,mit=300,eps=2.):
     if method =='PALM-eps-descent':
         eps_min = 0.02
         # mit = int(mit/(eps/eps_min))
-    a2,b2,c2,im_rec_palm_l1,cont_rec_palm_l1=golden_section_map(lmin=-6,lmax=0,bmin=-1,bmax=2,
+    a2,b2,c2,im_rec,cont_rec=golden_section_map(lmin=-6,lmax=0,bmin=-1,bmax=2,
                                                                 noised_im1=fNoisy,im1=f,
                                                                 contours_im1=e_exacte,scale_type='10',
                                                                 stop_crit=1e-4,grid_size=5,max_round=5,
                                                                 objective='Jaccard',method=method,norm_type=normtype,
                                                                 maxiter=mit,eps=eps,time_limit=360000,blur_type='Gaussian',
                                                                 A=A,eps_AT_min=eps_min)
-    print(np.max(cont_rec_palm_l1))
-
-    scipy.io.savemat('../results/'+method+'_'+normtype+'_'+str(mit)+'_'+namefile+'.mat', dict(u_rec=im_rec_palm_l1,e_rec=cont_rec_palm_l1))
+                                                                
+    scipy.io.savemat('../results/'+method+'_'+normtype+'_'+str(mit)+'_'+namefile+'.mat', dict(u_rec=im_rec,e_rec=cont_rec))
 
 
 i=0

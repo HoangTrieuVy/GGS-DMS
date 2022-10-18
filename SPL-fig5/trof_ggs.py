@@ -1,6 +1,6 @@
 import sys
-sys.path.insert(0, 'lib/')
-sys.path.insert(0, 'comparison_lib/')
+sys.path.insert(0, '../python_dms/lib/')
+sys.path.insert(0, '../python_dms/comparison_lib/')
 
 from dms import *
 from tools_dms import *
