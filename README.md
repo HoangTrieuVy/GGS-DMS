@@ -23,15 +23,35 @@ pip install -r requirements.txt  # install
 <details open>
 <summary>Denoisers</summary>
 Quick denoising with *clean image* and *noisy image*
-
-  
 </details>
+
+
 
 
 ## <div align="center">Reproducing results </div>
 
 <details open>
-<summary>Comparison on synthetic image </summary>
+<summary>Comparison on  one synthetic only AWGN noisy image </summary>
+ 
+Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
+
+```bash
+cd SPL-fig4
+python dms_spl_fig4.py
+```
+  
+Running [Home et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
+
+```bash
+cd SPL-fig4
+matlab -nodisplay -r "./setPath ; exit"
+matlab -nodisplay -r "./hohm_ggs ; exit"
+```
+ <img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/SPL-fig4/Screenshot%202022-10-18%20032114.png" >
+</details>
+
+<details open>
+<summary>Comparison on a set of synthetic noisy and blur images </summary>
  
 Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
 
@@ -39,6 +59,7 @@ Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/docume
 cd SPL-fig5
 python dms_ggs # running different schemes on dms
 python trof_ggs # TV and T-ROF 
+```
   
 Running [Home et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
 
@@ -47,11 +68,12 @@ cd SPL-fig5
 matlab -nodisplay -r "./setPath ; exit"
 matlab -nodisplay -r "./hohm_ggs ; exit"
 ```
-
+ <img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/SPL-fig5/Screenshot%202022-10-18%20032056.png" >
 </details>
 
-
 <details open>
+  
+  
 <summary>Comparison on real images BSDS500</summary>
 
 Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
