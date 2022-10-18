@@ -11,10 +11,12 @@ Pillow == 9.2.0
 
 # progressbar
 #pip install progressbar2
+progressbar2
 
 # open-cv
 #pip install opencv-python
-
+opencv-python
 # skimage
 #python -m pip install -U scikit-image
+scikit-image
 
