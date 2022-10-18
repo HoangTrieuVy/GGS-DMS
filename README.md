@@ -31,9 +31,30 @@ Quick denoising with *clean image* and *noisy image*
 ## <div align="center">Reproducing results </div>
 
 <details open>
-<summary>Comparing on real images BSDS500</summary>
+<summary>Comparison on synthetic image </summary>
+ 
+Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
 
-Running DMS on Python
+```bash
+cd SPL-fig5
+python dms_ggs # running different schemes on dms
+python trof_ggs # TV and T-ROF 
+  
+Running [Home et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
+
+```bash
+cd SPL-fig5
+matlab -nodisplay -r "./setPath ; exit"
+matlab -nodisplay -r "./hohm_ggs ; exit"
+```
+
+</details>
+
+
+<details open>
+<summary>Comparison on real images BSDS500</summary>
+
+Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
 ```bash
 cd SPL-fig6
 python dms_real_std_0_05
@@ -46,6 +67,9 @@ cd SPL-fig6
 matlab -nodisplay -r "./setPath ; exit"
 matlab -nodisplay -r "./hohm_figure6_std_0_05 ; exit"
 ```
-  
+ <img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/SPL-fig6/Screenshot%202022-10-18%20031023.png" >
+
 </details>
+
+
 
