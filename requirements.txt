@@ -2,12 +2,12 @@
  
 # Requirements:
 
-numpy==1.23.0
-matplotlib==3.4.1
-scipy==1.4.1
 
 # pillow>=8.0.1
 Pillow == 9.2.0
+numpy
+matplotlib
+scipy
 
 # progressbar
 #pip install progressbar2

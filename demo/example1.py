@@ -51,13 +51,16 @@ plt.imshow(out[1],'gray')
 draw_contour(out[0],'',fig=fig)
 plt.savefig(namefile+'_out.png', bbox_inches='tight', pad_inches=0)
 
+
 fig=plt.figure(figsize=(8,8))
 plt.axis('off')
 plt.imshow(fNoisy,'gray')
 plt.savefig(namefile+'.png', bbox_inches='tight', pad_inches=0)
+
 
 fig=plt.figure(figsize=(8,8))
 plt.axis('off')
 plt.imshow(f,'gray')
 draw_contour(e_exacte,'',fig=fig)
 plt.savefig(namefile+'_exact'+'.png', bbox_inches='tight', pad_inches=0)
+plt.show()
