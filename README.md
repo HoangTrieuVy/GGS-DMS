@@ -23,6 +23,12 @@ pip install -r requirements.txt  # install
 <details open>
 <summary>Denoisers</summary>
 Quick denoising with *clean image* and *noisy image*
+ 
+```bash
+cd demo
+python example1.py
+```
+
 </details>
 
 
