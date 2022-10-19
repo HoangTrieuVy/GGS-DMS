@@ -15,7 +15,7 @@ Clone repo and install [requirements.txt]() in a
 ```bash
 git clone https://github.com/HoangTrieuVy/GGS-DMS # clone
 cd your_repo
-pip install -r requirement.txt  # install
+pip install -r requirements.txt  # install
 ```
 
 </details>
