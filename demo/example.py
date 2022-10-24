@@ -5,7 +5,7 @@ from tools_dms import *
 from tools_trof import *
 from PIL import Image
 import scipy as scp
-import matplotlib.pyplot as plt
+
 import scipy.io
 import argparse
 import os 
@@ -73,7 +73,7 @@ def run(args):
 		ax2.text(0.5,-0.1, 'PSNR: '+  str(format(PSNR(out[1],x0), '.2f')), size=12, ha="center", 
          transform=ax2.transAxes)
 		plt.axis('off')
-		plt.title('Denoised')
+		plt.title(method+'-'+normtype+'-'+'Denoised')
 		plt.show()
 	else:
 		plt.subplot(121)
@@ -88,7 +88,7 @@ def run(args):
 		ax2.text(0.5,-0.1,  'PSNR: '+ str(format(PSNR(out[1],x0), '.2f')), size=12, ha="center", 
          transform=ax2.transAxes)
 		plt.axis('off')
-		plt.title('Denoised')
+		plt.title(method+'-'+normtype+'-'+'Denoised')
 		plt.show()
 
 if __name__ =='__main__':

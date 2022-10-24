@@ -12,6 +12,7 @@ from scipy.sparse import csc_matrix
 from scipy import signal
 from scipy.sparse import identity
 from scipy.sparse.linalg import spsolve
+import matplotlib.pyplot as plt
 
 class DMS():
     def __init__(self,save_name,blur_type='none',blur_size=5,blur_std=2,
