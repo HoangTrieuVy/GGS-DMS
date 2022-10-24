@@ -23,10 +23,24 @@ pip install -r requirements.txt  # install
 <details open>
 <summary>Denoisers</summary>
 Quick denoising with *clean image* and *noisy image*
+
+```python
+optional arguments:
+  -h, --help   show this help message and exit
+  --z Z        noisy image path
+  --x X        original image path
+  --b B        beta
+  --l L        lambda
+  --algo ALGO  PALM, SLPAM,PALM-eps-descent,SLPAM-eps-descent
+  --norm NORM  l1, AT
+  --eps EPS    epsilon
+  --it IT      number of iteration
+ ```
  
 ```bash
 cd demo
-python example1.py
+python example.py --n 
+
 ```
 
 </details>
