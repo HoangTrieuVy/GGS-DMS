@@ -1,15 +1,8 @@
     # -*- coding: utf-8 -*-
 import numpy as np
-from matplotlib import pyplot as plt
 from scipy import fftpack
 from scipy import linalg
-#from progressbar import *
-#import cv2
 import time
-from PIL import Image, ImageDraw
-import matplotlib.animation as animation
-from matplotlib.animation import PillowWriter
-# from tools_dms import  *
 from scipy.sparse import diags
 import scipy as scp
 from scipy.sparse import hstack
@@ -21,7 +14,7 @@ from scipy.sparse import identity
 from scipy.sparse.linalg import spsolve
 
 class DMS():
-    def __init__(self,img,save_name,blur_type='none',blur_size=5,blur_std=2,
+    def __init__(self,save_name,blur_type='none',blur_size=5,blur_std=2,
         noise_peak=30,noise_std=0.1,noise_type='Gaussian',norm_type='l1',edges='similar',
         beta=8,lamb=1e-2,eps=0.2,stop_criterion=1e-4,MaximumIteration=5000,alphabeta=True,
         method='SL-PAM',draw='line',noised_image_input=None,itadd=0,optD='OptD',
@@ -104,22 +97,21 @@ class DMS():
         self.gif_contour_PALM= []
 
         #Image variable
-#         print(img)
-        shape = np.shape(img)
+        shape = np.shape(noised_image_input)
         self.size = np.size(shape)
         if self.size == 2:
-            self.rows, self.cols = img.shape
+            self.rows, self.cols = noised_image_input.shape
             self.canal = 1
-            if np.max(img)>1:
-                self.image = (np.copy(img))/255.
+            if np.max(noised_image_input)>100:
+                self.image = (np.copy(noised_image_input))/255.
             else:
-                self.image = (np.copy(img))
+                self.image = (np.copy(noised_image_input))
         elif self.size ==3 :
-            self.rows, self.cols, self.canal= img.shape
-            if np.max(img)>1:
-                self.image = (np.copy(img))/255.
+            self.rows, self.cols, self.canal= noised_image_input.shape
+            if np.max(noised_image_input)>100:
+                self.image = (np.copy(noised_image_input))/255.
             else:
-                self.image = (np.copy(img))
+                self.image = (np.copy(noised_image_input))
             self.canal = 3
             self.canal0 = self.image[:,:,0]
             self.canal1 = self.image[:, :, 1]
@@ -198,9 +190,7 @@ class DMS():
         elif self.noise_type =='none':
             self.image_degraded = np.copy(self.image_degraded)
             self.image_degraded = self.image_degraded
-        # plt.imshow(self.image_degraded,'gray',vmin=0,vmax=1)
-        # plt.axis('off')
-        # plt.show()
+
 
     def perimeter_estimation(self,norm_type,method,en_SLPAM,en_PALM):
         if norm_type=='l1':
@@ -1002,9 +992,9 @@ class DMS():
             # plt.imshow(self.un_SLPAM,'gray',vmin=0,vmax=1)
             # draw_contour(self.un_SLPAM,self.en_SLPAM,'',number_of_image=1)
             # plt.show()
-        plt.figure(figsize=(10,10))
-        plt.hist(np.ravel(self.en_SLPAM))
-        plt.show()
+        # plt.figure(figsize=(10,10))
+        # plt.hist(np.ravel(self.en_SLPAM))
+        # plt.show()
         self.it_SLPAM  = it
         # pbar.finish()
         # print(time.time()-time_start_SLPAM,err)
@@ -1185,9 +1175,9 @@ class DMS():
             self.time_table[it] = time.time()- time_start_PALM
             it += 1
             # pbar.update(it)
-        plt.figure(figsize=(10,10))
-        plt.hist(np.ravel(self.en_PALM),bins=10)
-        plt.show()    
+        # plt.figure(figsize=(10,10))
+        # plt.hist(np.ravel(self.en_PALM),bins=10)
+        # plt.show()    
         self.it_PALM  = it
         # print(time.time()-time_start_PALM,err)
         # pbar.finish()
@@ -1617,7 +1607,7 @@ class DMS():
                 # print('0-1 type')
                 self.image_degraded = self.noised_image_input
 
-        if (self.method == 'SL-PAM'):
+        if (self.method == 'SLPAM'):
             self.initialisation_u_e_SLPAM(type_contour=self.type_contour)
             self.en_SLPAM, self.image_reconstructed,self.image_degraded,self.Jn_SLPAM,self.error_curve,self.ck_SLPAM,self.time_SLPAM,time_table= self.loop_SL_PAM()
             slpam_PSNR= PSNR(self.image,self.image_reconstructed)
