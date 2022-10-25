@@ -1,7 +1,7 @@
 # Joint image restoration and contour detection using Discrete Mumford-Shah with Ambrosio-Tortorelli penalization
 > **Hoang Trieu Vy Le, [Nelly Pustelnik](https://perso.ens-lyon.fr/nelly.pustelnik/), [Marion Foare](https://perso.ens-lyon.fr/marion.foare/),**
-*Proximal Based Strategies for Solving Discrete Mumford-Shah With Ambrosio-Tortorelli Penalization on Edges,*
-EUSIPCO 2022, [Download](https://ieeexplore.ieee.org/abstract/document/9723590)
+*Proximal Based Strategies for Solving Discrete Mumford-Shah With Ambrosio-Tortorelli Penalization on Edges,* EUSIPCO, Belgrade, Serbia, 
+ Aug.29-Sept.2, 2022, [Download](https://ieeexplore.ieee.org/abstract/document/9723590)
 
 ## <div align="center">Quick start Examples </div>
 
