@@ -52,8 +52,10 @@ optional arguments:
 ```bash
 cd demo
 python example.py --z ../degraded_images/12003_noise_0.05_blur_1_1_1.mat --b 2 --l 1e-4
+python example.py --z ../degraded_images/12003_noise_0.05_blur_1_1_1.mat --algo SLPAM --norm l1 --b 2 --l 1e-2 
  ```
   
+ 
 <img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/demo/12003_noise_0.05_blur_1_1_1_result.png" >
 
 </details>
