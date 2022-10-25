@@ -35,7 +35,10 @@ def run(args):
 		A = data['A_python']
 	elif extension_file=='.jpg' or extension_file=='.png':
 		z = np.array(Image.open(args.z))
-		x0= np.array(Image.open(args.x))
+		if args.x is None:
+			x0= None
+		else:
+			x0= np.array(Image.open(args.x))
 		A  = np.ones_like(z)
 
 	
