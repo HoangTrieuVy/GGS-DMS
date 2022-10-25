@@ -8,7 +8,7 @@
 <details open>
 <summary>Install</summary>
 
-Clone repo and install [requirements.txt]() in a
+Clone the repository and install [requirements.txt]() in a
 [**Python>=3.7.0**](https://www.python.org/) environment,
 
 
@@ -22,7 +22,7 @@ pip install -r requirements.txt  # install
 
 <details open>
 <summary>Denoisers</summary>
-Quick denoising with *clean image* and *noisy image*
+Denoising with *clean image* and *noisy image*
 
 ```python
 optional arguments:
