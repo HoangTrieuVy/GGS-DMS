@@ -22,7 +22,11 @@ pip install -r requirements.txt  # install
 
 <details open>
 <summary>Denoisers</summary>
-Denoising with *clean image* and *noisy image*
+Denoising with discrete Mumford-Shah functional:
+$
+ \min_{x,e} \frac{1}{2} \Vert A x - z \Vert_2^2 + \beta \Vert (1-e)\odot Dx \Vert_2^2 + \lambda h(e)
+$ 
+ *clean image* and *noisy image*
 
 ```python
 optional arguments:
