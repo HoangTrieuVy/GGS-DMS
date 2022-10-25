@@ -1,7 +1,6 @@
 # Joint image restoration and contour detection using Discrete Mumford-Shah with Ambrosio-Tortorelli penalization
 > **Hoang Trieu Vy Le, [Nelly Pustelnik](https://perso.ens-lyon.fr/nelly.pustelnik/), [Marion Foare](https://perso.ens-lyon.fr/marion.foare/),**
-*Proximal Based Strategies for Solving Discrete Mumford-Shah With Ambrosio-Tortorelli Penalization on Edges,* EUSIPCO, Belgrade, Serbia, 
- Aug.29-Sept.2, 2022, [Download](https://ieeexplore.ieee.org/abstract/document/9723590)
+*Proximal based strategies for solving Discrete Mumford-Shah with Ambrosio-Tortorelli penalization on edges,* IEEE Signal Processing Letters, vol. 29, pp. 952- 956, 2022. [Download](https://ieeexplore.ieee.org/abstract/document/9723590)
 
 ## <div align="center">Quick start Examples </div>
 
@@ -33,6 +32,8 @@ Denoising with discrete Mumford-Shah functional:
  * Input degraded images can be in standard image format (.png, .jpeg,...)  or .mat file (where the noisy image shuld be denoted by 'z').
  * As an option, the original image can be specified allowing to find the optimal $\lambda$ and $\beta$ hyperparameters minimizing the PSNR.
  * The penalization over the edges variable can be either the $\ell_1$-norm or Ambrosio-Tortorelli penalization.
+ * The default method is PALM with $h = \Vert \cdot \Vert_1$.
+ * The default parameter for Ambrosio-Tortorelli is  eps = 0.02.
  * SLPAM with Ambrosio-Tortorelli penalization is numerically costly.
 
 ```python
@@ -60,10 +61,10 @@ python example.py --z ../degraded_images/12003_noise_0.05_blur_1_1_1.mat --b 2 -
 
 
 
-## <div align="center">Reproducing results </div>
+## <div align="center">Reproducing IEEE SPL results </div>
 
 <details open>
-<summary>Comparison on  one synthetic only AWGN noisy image </summary>
+<summary>Comparison of several DMS strategies on a synthetic noisy image degraded with white Gaussian noise </summary>
  
 Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
 
@@ -83,7 +84,7 @@ matlab -nodisplay -r "./hohm_ggs ; exit"
 </details>
 
 <details open>
-<summary>Comparison on a set of synthetic noisy and blur images </summary>
+<summary>Comparison of several DMS strategies on several realization of synthetic noisy and blur images. </summary>
  
 Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
 
@@ -93,7 +94,7 @@ python dms_ggs # running different schemes on dms
 python trof_ggs # TV and T-ROF 
 ```
   
-Running [Home et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
+Running [Hohm et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
 
 ```bash
 cd SPL-fig5
@@ -106,7 +107,7 @@ matlab -nodisplay -r "./hohm_ggs ; exit"
 <details open>
   
   
-<summary>Comparison on real images BSDS500</summary>
+<summary>Comparison of several DMS strategies on real images from BSDS500 dataset.</summary>
 
 Running [DMS with different schemes](https://ieeexplore.ieee.org/abstract/document/9723590) on Python
 ```bash
@@ -114,7 +115,7 @@ cd SPL-fig6
 python dms_real_std_0_05
 python trof_ggs_real_std_0_05
 ```
-Running [Home et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
+Running [Hohm et al.](https://iopscience.iop.org/article/10.1088/0266-5611/31/11/115011/pdf?casa_token=1EtwyHOFYqIAAAAA:7KNljR8MVKVeHvoB3wqw1eWDDzgYFHc860UrQ7bm69d6MpeA5UU9fHkUdCgLsC4uKAXoOfbwWzC2) on matlab
 
 ```bash
 cd SPL-fig6
