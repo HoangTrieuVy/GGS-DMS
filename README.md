@@ -46,13 +46,20 @@ optional arguments:
   --l L        lambda
   --algo ALGO  PALM, SLPAM,PALM-eps-descent,SLPAM-eps-descent
   --norm NORM  l1, AT
-  --eps EPS    epsilon
+  --eps EPS    epsilon in the Ambrosio-Tortorelli penalization
+  --eps EPS    minimum epsilon when using AT eps decreasing to 0 
   --it IT      number of iteration
  ```
  
 ```bash
-cd demo
+cd examples
+
 python example.py --z 10081_noisy.jpg
+
+python example.py --z 10081_noisy.jpg  --algo PALM --norm AT --b 4 --l 1e-2 --eps 0.02
+
+python example.py --z 10081_noisy.jpg  --algo PALM-eps-descent --norm AT --b 4 --l 3e-3 --eps 0.02 --eps_AT_min 0.002
+
  ```
   
  
