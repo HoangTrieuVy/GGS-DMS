@@ -58,7 +58,8 @@ def run(args):
                                optD='OptD',eps=args.eps,time_limit=360000,A=A)
 
 	out = test.process()
-	plt.figure(figsize=(10,5))
+	sf=plt.figure(figsize=(10,5))
+	plt.subplots_adjust(wspace=0.1, hspace=0)
 
 	if x0 is not None:
 		plt.subplot(131)
@@ -90,7 +91,7 @@ def run(args):
 		plt.axis('off')
 		plt.title(method+'-'+normtype+'-'+'Denoised')
 		plt.show()
-
+	sf.savefig('results_'+args.z,bbox_inches='tight',pad_inches = 0)
 if __name__ =='__main__':
 	args = parse()
 	run(args)
