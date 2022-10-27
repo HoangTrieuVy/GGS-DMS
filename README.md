@@ -52,12 +52,11 @@ optional arguments:
  
 ```bash
 cd demo
-python example.py --z ../degraded_images/12003_noise_0.05_blur_1_1_1.mat --b 2 --l 1e-4
-python example.py --z ../degraded_images/12003_noise_0.05_blur_1_1_1.mat --algo SLPAM --norm l1 --b 2 --l 1e-2 
+python example.py --z 10081_noisy.jpg
  ```
   
  
-<img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/examples/12003_noise_0.05_blur_1_1_1_result.png" >
+<img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/examples/results_SLPAM_l1_10081_noisy.jpg" >
 
 </details>
 
