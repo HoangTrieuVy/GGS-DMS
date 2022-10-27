@@ -20,8 +20,9 @@ def parse():
 	parser.add_argument('--algo',type=str,help='PALM, SLPAM,PALM-eps-descent,SLPAM-eps-descent',default='SLPAM')
 	parser.add_argument('--norm',type=str,help='l1, AT',default='l1')
 	parser.add_argument('--eps',type=float,help='epsilon',default=0.02)
+	parser.add_argument('--eps_AT_min',type=float,help='epsilon AT min',default=0.02)
 	parser.add_argument('--it',type=int,help='number of iteration',default=300)
-
+	parser.add_argument('--saveresults',type=bool,help='Save results fig',default=False)
 	return parser.parse_args()
 
 def run(args):
@@ -55,7 +56,7 @@ def run(args):
 	test = DMS('', noise_type='Gaussian',blur_type='Gaussian',
                                beta=args.b, lamb=args.l, method=method,MaximumIteration=mit,
                                noised_image_input=z, norm_type=normtype,stop_criterion=1e-4, dkSLPAM=1e-4,
-                               optD='OptD',eps=args.eps,time_limit=360000,A=A)
+                               optD='OptD',eps=args.eps,eps_AT_min=args.eps_AT_min,time_limit=360000,A=A)
 
 	out = test.process()
 	sf=plt.figure(figsize=(10,5))
@@ -91,7 +92,8 @@ def run(args):
 		plt.axis('off')
 		plt.title(method+'-'+normtype+'-'+'Denoised')
 		plt.show()
-	sf.savefig('results_'+args.z,bbox_inches='tight',pad_inches = 0)
+	if args.saveresults is True:
+		sf.savefig('results_'+args.algo+'_'+args.norm+'_'+args.z,bbox_inches='tight',pad_inches = 0)
 if __name__ =='__main__':
 	args = parse()
 	run(args)
