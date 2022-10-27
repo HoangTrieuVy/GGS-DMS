@@ -22,11 +22,12 @@ pip install -r requirements.txt  # install
 <details open>
 <summary>Denoisers</summary>
 Denoising with discrete Mumford-Shah functional:
- $
+
+ $$
 \begin{equation}
  \min_{x,e} \frac{1}{2} \Vert A x - z \Vert_2^2 + \beta \Vert (1-e)\odot Dx \Vert_2^2 + \lambda h(e)
 \end{equation}
- $
+ $$
  
  Remarks:
  * Input degraded images can be in standard image format (.png, .jpeg,...)  or .mat file (where the noisy image shuld be denoted by 'z').
@@ -36,7 +37,7 @@ Denoising with discrete Mumford-Shah functional:
  * The default parameter for Ambrosio-Tortorelli is  eps = 0.02.
  * SLPAM with Ambrosio-Tortorelli penalization is numerically costly.
 
-```python
+```bash
 optional arguments:
   -h, --help   show this help message and exit
   --z Z        noisy image path
