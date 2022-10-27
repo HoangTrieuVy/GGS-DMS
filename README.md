@@ -57,7 +57,7 @@ python example.py --z ../degraded_images/12003_noise_0.05_blur_1_1_1.mat --algo 
  ```
   
  
-<img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/demo/12003_noise_0.05_blur_1_1_1_result.png" >
+<img align="center" width="1500" src="https://github.com/HoangTrieuVy/GGS-DMS/blob/main/examples/12003_noise_0.05_blur_1_1_1_result.png" >
 
 </details>
 
