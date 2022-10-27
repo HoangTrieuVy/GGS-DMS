@@ -15,16 +15,17 @@ def parse():
 
 	parser.add_argument('--z',type=str,help='noisy image path',default=None)
 	parser.add_argument('--x',type=str,help='original image path',default=None)
-	parser.add_argument('--b',type=float,help='beta',default=2)
-	parser.add_argument('--l',type=float,help='lambda',default=1e-4)
-	parser.add_argument('--algo',type=str,help='PALM, SLPAM,PALM-eps-descent,SLPAM-eps-descent',default='PALM')
+	parser.add_argument('--b',type=float,help='beta',default=10)
+	parser.add_argument('--l',type=float,help='lambda',default=2e-2)
+	parser.add_argument('--algo',type=str,help='PALM, SLPAM,PALM-eps-descent,SLPAM-eps-descent',default='SLPAM')
 	parser.add_argument('--norm',type=str,help='l1, AT',default='l1')
-	parser.add_argument('--eps',type=float,help='epsilon',default=0.2)
+	parser.add_argument('--eps',type=float,help='epsilon',default=0.02)
 	parser.add_argument('--it',type=int,help='number of iteration',default=300)
 
 	return parser.parse_args()
 
 def run(args):
+	print('Discret Mumford-Shah functionnal using '+args.algo+'-'+args.norm)
 	filename,extension_file = os.path.splitext(args.z)
 	
 	if extension_file == '.mat':
@@ -57,7 +58,6 @@ def run(args):
                                optD='OptD',eps=args.eps,time_limit=360000,A=A)
 
 	out = test.process()
-
 	plt.figure(figsize=(10,5))
 
 	if x0 is not None:
