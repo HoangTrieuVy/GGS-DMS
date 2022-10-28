@@ -726,7 +726,7 @@ class DMS():
             # draw_contour(self.en_PALM,name='',fig=f)
             # plt.savefig('out_AT_eps_descent/{}.png'.format(self.eps))
             # plt.show()
-            self.eps = self.eps/1.25
+            self.eps = self.eps/2
 
             it+= iteration
 

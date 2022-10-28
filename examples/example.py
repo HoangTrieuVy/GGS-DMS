@@ -9,7 +9,7 @@ import scipy as scp
 import scipy.io
 import argparse
 import os 
-
+-4
 def parse():
 	parser = argparse.ArgumentParser(description='Discret Mumford-Shah functionnal')
 
@@ -22,7 +22,7 @@ def parse():
 	parser.add_argument('--eps',type=float,help='epsilon',default=0.02)
 	parser.add_argument('--eps_AT_min',type=float,help='epsilon AT min',default=0.02)
 	parser.add_argument('--it',type=int,help='number of iteration',default=300)
-	parser.add_argument('--saveresults',type=bool,help='Save results fig',default=False)
+	parser.add_argument('--saveresults',type=bool,help='Save results fig',default=True)
 	return parser.parse_args()
 
 def run(args):
