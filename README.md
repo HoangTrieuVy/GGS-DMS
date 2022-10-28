@@ -54,11 +54,11 @@ optional arguments:
 ```bash
 cd examples
 
-python example.py --z 10081_noisy.jpg
+python dms_denoiser.py --z 10081_noisy.jpg
 
-python example.py --z 10081_noisy.jpg  --algo PALM --norm AT --b 4 --l 1e-2 --eps 0.02
+python dms_denoiser.py --z 10081_noisy.jpg  --algo PALM --norm AT --b 4 --l 1e-2 --eps 0.02
 
-python example.py --z 10081_noisy.jpg  --algo PALM-eps-descent --norm AT --b 4 --l 3e-3 --eps 0.02 --eps_AT_min 0.002
+python dms_denoiser.py --z 10081_noisy.jpg  --algo PALM-eps-descent --norm AT --b 4 --l 3e-3 --eps 0.02 --eps_AT_min 0.002
 
  ```
   
