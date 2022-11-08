@@ -641,14 +641,13 @@ class DMS():
         return kld
 
     def loop_PALM_eps_descent(self):
-        # self.Jn_PALM = 1e10 * np.ones(self.MaximumIteration + 1)
+        self.Jn_PALM = 1e10 * np.ones(self.MaximumIteration)
         self.time_PALM =  0
         self.ck_PALM = np.ones(self.MaximumIteration+1)
         self.dk_PALM = np.ones(self.MaximumIteration+1)
         err = 1
-        # temp_err = err*2
         self.energy(self.un_PALM, self.en_PALM, self.image_degraded)
-        # self.Jn_PALM[0] = self.J
+        self.Jn_PALM[0] = self.J
         J_previous = self.J
 
         # Main loop
@@ -657,8 +656,7 @@ class DMS():
         # print(self.beta,self.lam)
         images=[]
         while self.eps>=self.eps_AT_min:# and time.time()- time_start_PALM<60:
-            # print("Epsilon: ",self.eps)
-            # print('error',np.abs((temp_err-err)/ temp_err))  
+            print("Epsilon: ",self.eps)
             iteration = 0
             time_start_local = time.time()
             err=1
@@ -668,8 +666,6 @@ class DMS():
                 elif self.optD_type == 'Matrix':
                     ck, dk = self.norm_ck_dk(method='PALM')
 
-                # ck=2*self.beta*1.01
-                # self.dk_PALM[it] = dk 
 
                 next_un_PALM = self.L_prox(self.un_PALM - (self.beta/ ck) * self.S_du(self.un_PALM, self.en_PALM), 1 / ck,
                                       self.image_degraded)
@@ -677,56 +673,29 @@ class DMS():
                 
                 self.energy(next_un_PALM, next_en_PALM, self.image_degraded)
                 J_current = self.J
-
-                # print(self.J)
-                # self.Jn_PALM[iteration + 1] = self.J
-
-                # temp_err = err
-                # err = np.sum(np.abs(self.en_PALM-temp_en_SLPAM))
-
-                # err = abs(self.Jn_PALM[iteration + 1] - self.Jn_PALM[iteration])/abs(self.Jn_PALM[iteration])
+                self.Jn_PALM[iteration] = self.J
                 err =abs(J_current - J_previous)/abs(J_current+1e-8)
-
                 if np.isnan(err):
                     # print('Nan error err')
                     break
                 else:
                     self.un_PALM = next_un_PALM
                     self.en_PALM = next_en_PALM
-
-                
+       
                 iteration+= 1
-                # it+=1
-                # if iteration%2000==0:
-                #     print('Iteration ',iteration, 'Error: ',err)
-
                 J_previous = J_current
-            # fig=plt.figure(1,figsize=(10,10))
-            # plt.axis('off')
-            # plt.imshow(self.un_PALM,'gray',vmin=0,vmax=1)
-            # draw_contour(self.en_PALM,name='',fig=fig)
-            # print('l1 perimeter non-filterd: ',self.perimeter_estimation(norm_type='l1',
-            #     method='PALM',en_SLPAM=None,en_PALM=self.en_PALM))
-            # print('l1 perimeter filtered: ',self.perimeter_estimation(norm_type='l1',
-            #     method='PALM',en_SLPAM=None,en_PALM=self.en_PALM>=0.5))
+                
+            fig=plt.figure(1,figsize=(10,10))
+            plt.axis('off')
+            plt.imshow(self.un_PALM,'gray',vmin=0,vmax=1)
+            draw_contour(self.en_PALM,name='',fig=fig)
+            plt.show()
+            
+            plt.figure()
+            plt.plot(self.Jn_PALM[:iteration])
+            plt.show()
 
-            # print('AT perimeter non-filterd: ',self.perimeter_estimation(norm_type='AT',
-            #     method='PALM',en_SLPAM=None,en_PALM=self.en_PALM))
-            # print('AT perimeter filtered: ',self.perimeter_estimation(norm_type='AT',
-            #     method='PALM',en_SLPAM=None,en_PALM=self.en_PALM>=0.5))
-            # plt.show()
-
-
-            # f=plt.figure(2,figsize=(5,5))
-            # plt.hist(self.en_PALM[:,:,0])
-            # plt.show()
-            # f=plt.figure(1)
-            # plt.axis('off')
-            # plt.imshow(self.un_PALM,'gray',vmin=0,vmax=1)
-            # draw_contour(self.en_PALM,name='',fig=f)
-            # plt.savefig('out_AT_eps_descent/{}.png'.format(self.eps))
-            # plt.show()
-            self.eps = self.eps/2
+            self.eps = self.eps/1.5
 
             it+= iteration
 

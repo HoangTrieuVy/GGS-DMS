@@ -9,7 +9,7 @@ import scipy as scp
 import scipy.io
 import argparse
 import os 
--4
+
 def parse():
 	parser = argparse.ArgumentParser(description='Discret Mumford-Shah functionnal')
 
