@@ -5,7 +5,6 @@ from tools_dms import *
 from tools_trof import *
 from PIL import Image
 import scipy as scp
-
 import scipy.io
 import argparse
 import os 
@@ -42,6 +41,7 @@ def run(args):
 		else:
 			x0= np.array(Image.open(args.x).convert('L'))
 		A  = np.ones_like(z)
+
 
 
 	
