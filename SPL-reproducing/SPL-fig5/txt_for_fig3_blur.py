@@ -1,7 +1,7 @@
 import sys
-sys.path.insert(0, 'python_dms/lib/')
+sys.path.insert(0, '../../python_dms/lib/')
 
-from dms import *
+# from dms import *
 from tools_dms import *
 from tools_trof import *
 

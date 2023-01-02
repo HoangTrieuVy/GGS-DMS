@@ -1,11 +1,12 @@
 import sys
-from PyQt5.QtWidgets import (QApplication, QWidget, QFileDialog, QLabel, QComboBox,
+from PyQt5.QtWidgets import (QApplication, QWidget, QFileDialog, QLabel, QComboBox, 
                              QHBoxLayout, QVBoxLayout, QLineEdit, QPushButton,QSplitter,QListWidgetItem,QListWidget)
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt, QTime
 from PyQt5.QtGui import QImage
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
+import matplotlib.pyplot as plt
 
 import cv2
 import numpy as np
@@ -20,6 +21,8 @@ import scipy.io
 class DenoiserWidget(QWidget):
     def __init__(self):
         super().__init__()
+
+        plt.figure()
 
         # Create a combo box to choose the denoising method
         self.method_combo_box = QComboBox()
@@ -112,9 +115,8 @@ class DenoiserWidget(QWidget):
         self.image_label_left = QLabel(self)
         self.image_label_right = QLabel(self)
         self.splitter2 = QSplitter(Qt.Horizontal, self)
-        self.image_label_left_down = QLabel(self)
+        self.image_label_left_down = QLabel(self)        
         self.image_label_right_down = QLabel(self)
-
         self.splitter1.addWidget(self.image_label_left)
         self.splitter1.addWidget(self.image_label_right)
         self.splitter2.addWidget(self.image_label_left_down)
@@ -203,8 +205,12 @@ class DenoiserWidget(QWidget):
 
         # Display the denoised image in the image_label
         self.image_label_right.setPixmap(self.to_qpixmap(np.asarray( np.clip(denoised_image*255,0,255), dtype="uint8")))
-        self.image_label_left_down.setPixmap(self.to_qpixmap(np.asarray( np.clip(out[5][:,:,0]*255,0,255), dtype="uint8")))
-        self.image_label_right_down.setPixmap(self.to_qpixmap(np.asarray( np.clip(out[5][:,:,1]*255,0,255), dtype="uint8")))
+        # self.image_label_left_down.setPixmap(self.to_qpixmap(np.asarray( np.clip(out[5][:,:,0]*255,0,255), dtype="uint8")))
+        
+        plt.plot(out[3],label=self.algo_combo_box.currentText()+self.length_penalization_combo_box.currentText())
+        plt.legend()
+        plt.show()
+        self.image_label_right_down.setPixmap(self.to_qpixmap(np.asarray( np.clip((out[5][:,:,1]+out[5][:,:,0])/2*255,0,255), dtype="uint8")))
 
         # Set the denoising time label
         end = time.time()

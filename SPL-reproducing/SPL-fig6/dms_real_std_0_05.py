@@ -1,13 +1,11 @@
 import sys
-sys.path.insert(0, 'lib/')
+sys.path.insert(0, '../../python_dms/lib/')
 
-from dms import *
+# from dms import *
 from tools_dms import *
 from tools_trof import *
 from PIL import Image
 import scipy as scp
-from skimage.metrics import structural_similarity as ssim
-from skimage.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 import scipy.io
 
@@ -33,7 +31,7 @@ def dms(namefile,method,normtype,mit=300,eps=2.):
                                                                 contours_im1=e_exacte,scale_type='10',
                                                                 stop_crit=1e-4,grid_size=5,max_round=5,
                                                                 objective='Jaccard',method=method,norm_type=normtype,
-                                                                maxiter=mit,eps=eps,time_limit=360000,blur_type='Gaussian',
+                                                                maxiter=mit,eps=eps,
                                                                 A=A,eps_AT_min=eps_min)
 
     scipy.io.savemat('../results/'+method+'_'+normtype+'_'+str(mit)+'_'+namefile+'.mat', dict(u_rec=im_rec_palm_l1,e_rec=cont_rec_palm_l1))
