@@ -853,12 +853,6 @@ class ProximityOperators:
             e - np.maximum(np.minimum(e, tau * gamma_1), -tau * gamma_1)
         )
 
-def save_results(a,b,c,link):
-    
-    np.save(link+"a",a)
-    np.save(link+"b",b)
-    np.save(link+"c",c)    
-
 def draw_dots_multiresolution(b,a,beta_axis,lambda_axis,name='PSNR'):
     if name == 'Jaccard':
         stemp = 10

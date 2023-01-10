@@ -1,6 +1,5 @@
 import sys
 sys.path.insert(0, '../python_dms/lib/')
-from dms import *
 from tools_dms import *
 from tools_trof import *
 from PIL import Image

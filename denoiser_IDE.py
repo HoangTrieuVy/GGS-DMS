@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 sys.path.insert(0, 'python_dms/lib/')
-from dms import *
 from tools_dms import *
 from tools_trof import *
 from PIL import Image
@@ -184,15 +183,22 @@ class DenoiserWidget(QWidget):
             beta = float(self.beta_DMS_line_edit.text())
             lamb = float(self.lambda_DMS_line_edit.text())
             A  = np.ones_like(self.image_noisy_numpy)
-            if algo =='PALM' or algo=='PALM-eps-descent':
-                if normtype=='AT':
-                    normtype= 'AT-fourier'
             mit=300
 
-            model = DMS('', noise_type='Gaussian',blur_type='Gaussian',
-                                       beta=beta, lamb=lamb, method=algo,MaximumIteration=mit,
-                                       noised_image_input=self.image_noisy_numpy, norm_type=normtype,stop_criterion=1e-4, dkSLPAM=1e-4,
-                                       optD='OptD',eps=0.2,eps_AT_min=0.02,time_limit=360000,A=A)
+            model = DMS(
+                    norm_type=normtype,
+                    edges="similar",
+                    beta=beta,
+                    lamb=lamb,
+                    eps=0.2,
+                    stop_criterion=1e-4,
+                    MaximumIteration=mit,
+                    method=algo,
+                    noised_image_input=self.image_noisy,
+                    optD="OptD",
+                    dk_SLPAM_factor=1e-4,
+                    eps_AT_min=0.02,
+                    A=A)
 
             out = model.process()
             denoised_image = out[1]
@@ -207,10 +213,10 @@ class DenoiserWidget(QWidget):
         self.image_label_right.setPixmap(self.to_qpixmap(np.asarray( np.clip(denoised_image*255,0,255), dtype="uint8")))
         # self.image_label_left_down.setPixmap(self.to_qpixmap(np.asarray( np.clip(out[5][:,:,0]*255,0,255), dtype="uint8")))
         
-        plt.plot(out[3],label=self.algo_combo_box.currentText()+self.length_penalization_combo_box.currentText())
-        plt.legend()
-        plt.show()
-        self.image_label_right_down.setPixmap(self.to_qpixmap(np.asarray( np.clip((out[5][:,:,1]+out[5][:,:,0])/2*255,0,255), dtype="uint8")))
+        # plt.plot(out[3],label=self.algo_combo_box.currentText()+self.length_penalization_combo_box.currentText())
+        # plt.legend()
+        # plt.show()
+        # self.image_label_right_down.setPixmap(self.to_qpixmap(np.asarray( np.clip((out[5][:,:,1]+out[5][:,:,0])/2*255,0,255), dtype="uint8")))
 
         # Set the denoising time label
         end = time.time()
