@@ -786,7 +786,6 @@ def matlab_style_gauss2D(shape=(3, 3), sigma=0.5):
 
 class CreateNorms:
     # def __init__(self):
-    #     print()
     def L0(self, x):
         return np.sum(x != 0)
 
