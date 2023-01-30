@@ -80,7 +80,6 @@ class DMS:
                 self.en_PALM = np.zeros((self.rows,self.cols,2, self.canal))
 
         self.rowscols = self.rows * self.cols        
-
         # SL-PAM parameters
         self.error_curve = None
         self.dk_SLPAM_factor = dk_SLPAM_factor

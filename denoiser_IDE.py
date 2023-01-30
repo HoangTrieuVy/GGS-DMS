@@ -11,10 +11,7 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 sys.path.insert(0, 'python_dms/lib/')
-<<<<<<< Updated upstream
-=======
 # from dms import *
->>>>>>> Stashed changes
 from tools_dms import *
 # from tools_trof import *
 from PIL import Image
@@ -151,16 +148,20 @@ class DenoiserWidget(QWidget):
 
             # Load the image and display it in the label
             self.image_noisy = cv2.imread(file_name, cv2.IMREAD_COLOR)
-            self.image_noisy = cv2.cvtColor(self.image_noisy, cv2.COLOR_BGR2GRAY) #cv2.COLOR_BGR2RGB)
+            self.image_noisy = cv2.cvtColor(self.image_noisy, cv2.COLOR_BGR2RGB) #COLOR_BGR2GRAY)
             self.image_noisy_numpy = np.asarray( self.image_noisy, dtype="int32" )
-            # height, width, channels = self.image_noisy.shape
-            height, width = self.image_noisy.shape
-            channels= 1
+            shape_im = self.image_noisy_numpy.shape
+            self.height, self.width= shape_im[0], shape_im[1]
+            if len(shape_im)==3:
+                self.channels= shape_im[2]
+            else:
+                self.channels= 1
             # Set the image size label
-            self.image_size_label.setText(f"Image size: {width}x{height}")
+            self.image_size_label.setText(f"Image size: {self.width}x{self.height}")
 
-            bytes_per_line = channels * width
-            qt_image = QImage(self.image_noisy.data, width, height, bytes_per_line, QImage.Format_Grayscale8)#Format_RGB888)
+            bytes_per_line = self.channels * self.width
+            qt_image = QImage(self.image_noisy.data, self.width, self.height, bytes_per_line, QImage.Format_RGB888)#Format_Grayscale8)
+            # qt_image = QImage(self.image_noisy.data, width, height, bytes_per_line, QImage.Format_Grayscale8)#)
             self.image_label_left.setPixmap(QPixmap.fromImage(qt_image))
             self.image_label_left.setScaledContents(True)
             self.image_label_right.clear()
@@ -180,31 +181,15 @@ class DenoiserWidget(QWidget):
         elif method == "DMS":
 
             start = time.time()
-
-
             algo = self.algo_combo_box.currentText()
             normtype = self.length_penalization_combo_box.currentText()
             beta = float(self.beta_DMS_line_edit.text())
             lamb = float(self.lambda_DMS_line_edit.text())
-            A  = np.ones_like(self.image_noisy_numpy)
+            A  = np.ones((self.height,self.width))
+            print(A.shape)
             mit=300
 
-<<<<<<< Updated upstream
-            model = DMS(
-                    norm_type=normtype,
-                    edges="similar",
-                    beta=beta,
-                    lamb=lamb,
-                    eps=0.2,
-                    stop_criterion=1e-4,
-                    MaximumIteration=mit,
-                    method=algo,
-                    noised_image_input=self.image_noisy,
-                    optD="OptD",
-                    dk_SLPAM_factor=1e-4,
-                    eps_AT_min=0.02,
-                    A=A)
-=======
+
             model = DMS(norm_type=normtype,
                         edges="similar",
                         beta=beta,
@@ -213,12 +198,11 @@ class DenoiserWidget(QWidget):
                         stop_criterion=1e-4,
                         MaximumIteration=mit,
                         method=algo,
-                        noised_image_input=None,
+                        noised_image_input=self.image_noisy_numpy,
                         optD="OptD",
                         dk_SLPAM_factor=1e-4,
                         eps_AT_min=0.02,
                         A=A)
->>>>>>> Stashed changes
 
             out = model.process()
             denoised_image = out[1]
@@ -231,12 +215,9 @@ class DenoiserWidget(QWidget):
 
         # Display the denoised image in the image_label
         self.image_label_right.setPixmap(self.to_qpixmap(np.asarray( np.clip(denoised_image*255,0,255), dtype="uint8")))
-        # self.image_label_left_down.setPixmap(self.to_qpixmap(np.asarray( np.clip(out[5][:,:,0]*255,0,255), dtype="uint8")))
-        
-        # plt.plot(out[3],label=self.algo_combo_box.currentText()+self.length_penalization_combo_box.currentText())
-        # plt.legend()
-        # plt.show()
-        # self.image_label_right_down.setPixmap(self.to_qpixmap(np.asarray( np.clip((out[5][:,:,1]+out[5][:,:,0])/2*255,0,255), dtype="uint8")))
+
+        self.image_label_left_down.setPixmap(self.to_qpixmap_gray(np.asarray( np.clip(out[0][:,:,0]*255,0,255), dtype="uint8")))
+        self.image_label_right_down.setPixmap(self.to_qpixmap_gray(np.asarray( np.clip(out[0][:,:,1]*255,0,255), dtype="uint8")))
 
         # Set the denoising time label
         end = time.time()
@@ -254,14 +235,17 @@ class DenoiserWidget(QWidget):
         if file_name:
             # Save the image
             cv2.imwrite(file_name,cv2.cvtColor(self.image_denoised, cv2.COLOR_RGB2BGR))
+    def to_qpixmap_gray(self, image):
+        # Convert the image to a QPixmap
+
+        bytes_per_line = 1*self.width
+        return QPixmap.fromImage(QImage(image.data, self.width, self.height, bytes_per_line, QImage.Format_Grayscale8)) #))
 
     def to_qpixmap(self, image):
         # Convert the image to a QPixmap
-        height, width = image.shape
-        # height, width, channel = image.shape
-        # bytes_per_line = 3 * width
-        bytes_per_line = 1 * width
-        return QPixmap.fromImage(QImage(image.data, width, height, bytes_per_line, QImage.Format_Grayscale8)) #Format_RGB888))
+
+        bytes_per_line = self.channels*self.width
+        return QPixmap.fromImage(QImage(image.data, self.width, self.height, bytes_per_line, QImage.Format_RGB888)) #))
 
     def on_method_combo_box_changed(self, index):
         # Show the appropriate parameter line edit when the method is changed
