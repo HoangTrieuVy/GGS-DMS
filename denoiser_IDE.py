@@ -11,8 +11,12 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 sys.path.insert(0, 'python_dms/lib/')
+<<<<<<< Updated upstream
+=======
+# from dms import *
+>>>>>>> Stashed changes
 from tools_dms import *
-from tools_trof import *
+# from tools_trof import *
 from PIL import Image
 import scipy as scp
 import scipy.io
@@ -185,6 +189,7 @@ class DenoiserWidget(QWidget):
             A  = np.ones_like(self.image_noisy_numpy)
             mit=300
 
+<<<<<<< Updated upstream
             model = DMS(
                     norm_type=normtype,
                     edges="similar",
@@ -199,6 +204,21 @@ class DenoiserWidget(QWidget):
                     dk_SLPAM_factor=1e-4,
                     eps_AT_min=0.02,
                     A=A)
+=======
+            model = DMS(norm_type=normtype,
+                        edges="similar",
+                        beta=beta,
+                        lamb=lamb,
+                        eps=0.2,
+                        stop_criterion=1e-4,
+                        MaximumIteration=mit,
+                        method=algo,
+                        noised_image_input=None,
+                        optD="OptD",
+                        dk_SLPAM_factor=1e-4,
+                        eps_AT_min=0.02,
+                        A=A)
+>>>>>>> Stashed changes
 
             out = model.process()
             denoised_image = out[1]

@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import fftpack
 import time
-from dms import *
+# from dms import *
 import numpy as np
 from scipy import fftpack
 import time
@@ -13,9 +13,9 @@ from scipy.sparse import csc_matrix
 from scipy.sparse import identity
 from scipy.sparse.linalg import spsolve,lgmres
 import matplotlib.pyplot as plt
-import cupy as cp
-from cupyx.scipy.sparse.linalg import spsolve as spsolve_cuda
-from cupyx.scipy.sparse import csc_matrix as csc_matrix_cuda
+# import cupy as cp
+# from cupyx.scipy.sparse.linalg import spsolve as spsolve_cuda
+# from cupyx.scipy.sparse import csc_matrix as csc_matrix_cuda
 
 class DMS:
     def __init__(
