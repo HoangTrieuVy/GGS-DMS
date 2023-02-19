@@ -187,7 +187,7 @@ class DenoiserWidget(QWidget):
             lamb = float(self.lambda_DMS_line_edit.text())
             A  = np.ones((self.height,self.width))
             print(A.shape)
-            mit=300
+            mit= 100
 
 
             model = DMS(norm_type=normtype,
