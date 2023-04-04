@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import fftpack
 import time
-# from dms import *
+from tools_dms import *
 import numpy as np
 from scipy import fftpack
 import time
@@ -46,24 +46,29 @@ class DMS:
         # Image variable
         shape = np.shape(noised_image_input)
         size = np.size(shape)
+
         if size == 2:
+            print("Image gray scale")
             self.rows, self.cols = noised_image_input.shape
             self.canal = 1
             if np.max(noised_image_input) > 100:
-                print('Convert image to float \n')
+                print('Convert image to float [0,1] \n')
                 self.noised_image_input = (np.copy(noised_image_input)) / 255.0
             else:
-                # print('Image in float')
+                print('Image is already in float [0,1] \n')
                 self.noised_image_input = np.copy(noised_image_input)
             self.en_SLPAM = np.zeros((self.rows,self.cols,2))
             self.en_PALM = np.zeros((self.rows,self.cols,2))
             self.un_SLPAM = self.noised_image_input
             self.un_PALM = self.noised_image_input
         elif size == 3:
+            print("Color image")
             self.rows, self.cols, self.canal = noised_image_input.shape
             if np.max(noised_image_input) > 100:
+                print('Convert image to float [0,1] \n')
                 self.noised_image_input = (np.copy(noised_image_input)) / 255.0
             else:
+                print('Image is already in float [0,1] \n')
                 self.noised_image_input = np.copy(noised_image_input)
             self.canal = 3
             self.un_SLPAM = self.noised_image_input
@@ -161,7 +166,7 @@ class DMS:
                 return self.beta*np.sum((np.repeat(((1 - e))[:, :, :, np.newaxis], self.canal, axis=3)* self.optD(u)) ** 2)
             elif self.edges =='distinct':
                 pass
-        elif self.canal == 1:
+        elif self.canal == 1:            
             return self.beta*np.sum(((1 - e) * self.optD(u)) ** 2)
 
     def S_du(self, u, e):
@@ -212,7 +217,7 @@ class DMS:
             return self.prox.L1(e, tau)
         elif self.norm_type == "l1q":
             return self.prox.quadL1(e, tau)
-        elif self.norm_type == "AT":
+        elif self.norm_type == "AT" and (self.method=='SLPAM'):
             e_ravel_0 = e[:, :, 0].ravel("C")
             e_ravel_1 = e[:, :, 1].ravel("C")
             e_ravel = np.hstack((e_ravel_0, e_ravel_1))
@@ -308,7 +313,7 @@ class DMS:
             rhok = np.linalg.norm(xn1, "fro")
         return 1.01 * np.sqrt(rhok) + 1e-10
 
-    def norm_ck_dk_opt(self, method, e):
+    def norm_ck_dk_opt(self, method):
         iter = 0
         if method == "SLPAM":
             #             xn = np.random.rand(*self.image.shape)
@@ -457,8 +462,9 @@ class DMS:
             print("Epsilon: ", self.eps)
             iteration = 0
             err = 1
+            
             while (err >= self.stop_criterion) and iteration < self.MaximumIteration:   
-                ck, dk = self.norm_ck_dk(method="PALM")
+                ck, dk = self.norm_ck_dk_opt(method="PALM")
                 next_un_PALM = self.L_prox(
                     self.un_PALM
                     - (self.beta / ck) * self.S_du(self.un_PALM, self.en_PALM),
@@ -500,9 +506,9 @@ class DMS:
             err = 1
             while (err >= self.stop_criterion and it < self.MaximumIteration):
                 if self.optD_type == "Matrix":
-                    ck = self.norm_ck_dk(method="SLPAM")
+                    ck = self.norm_ck_dk_opt(method="SLPAM")
                 elif self.optD_type == "OptD":
-                    ck = self.norm_ck_dk_opt(method="SLPAM", e=self.en_SLPAM)
+                    ck = self.norm_ck_dk_opt(method="SLPAM")
 
                 self.un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM),1 / ck,self.noised_image_input)
                
@@ -545,7 +551,7 @@ class DMS:
         self.Jn_PALM+= [self.energy(self.un_PALM, self.en_PALM, self.noised_image_input)]
  
         while (err > self.stop_criterion) and ( it < self.MaximumIteration ):
-            ck, dk = self.norm_ck_dk_opt(method="PALM", e=self.en_PALM)
+            ck, dk = self.norm_ck_dk_opt(method="PALM")
 
             self.un_PALM = self.L_prox(
                 self.un_PALM - (self.beta / ck) * self.S_du(self.un_PALM, self.en_PALM),
@@ -570,13 +576,15 @@ class DMS:
 
         # Main loop
         while (err > self.stop_criterion) and (it < self.MaximumIteration):  
-            ck = self.norm_ck_dk_opt(method="SLPAM", e=self.en_SLPAM)
+            ck = self.norm_ck_dk_opt(method="SLPAM")
             self.un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM), 1 / ck,self.noised_image_input)
             # next_un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM), 1 / ck,self.noised_image_input)
             if self.norm_type == "l1" or self.norm_type == "l1q":
                 over  = self.beta * self.S_D(self.un_SLPAM) + self.dk_SLPAM_factor*ck/ 2.0 * self.en_SLPAM
                 lower = self.beta * self.S_D(self.un_SLPAM) + self.dk_SLPAM_factor*ck / 2.0
                 self.en_SLPAM = self.R_prox(over / lower, self.lam / (2 * lower))
+                self.Jn_SLPAM += [self.energy(self.un_SLPAM, self.en_SLPAM, self.noised_image_input)]
+                err = abs(self.Jn_SLPAM[it + 1] - self.Jn_SLPAM[it]) / abs(self.Jn_SLPAM[it])
             elif self.norm_type == "AT":
                 self.en_SLPAM = (self.en_SLPAM+ 2 * self.beta / (self.dk_SLPAM_factor) * self.optD(self.un_SLPAM) ** 2)
                 e_ravel_0 = self.en_SLPAM[:, :, 0].ravel("C")
@@ -602,7 +610,7 @@ class DMS:
                 self.en_SLPAM[:, :, 1] = temp[self.rowscols :].reshape(self.rows, self.cols)
                 self.Jn_SLPAM += [self.energy(self.un_SLPAM, self.en_SLPAM, self.noised_image_input)]
                 err = abs(self.Jn_SLPAM[it + 1] - self.Jn_SLPAM[it]) / abs(self.Jn_SLPAM[it])
-                print(err)
+                
             it += 1
         return self.en_SLPAM,self.un_SLPAM, self.Jn_SLPAM
 
@@ -617,3 +625,71 @@ class DMS:
             return  self.loop_SL_PAM_eps_descent()
         elif self.method == "PALM-eps-descent":
             return self.loop_PALM_eps_descent()
+
+
+class CreateNorms:
+    # def __init__(self):
+    def L0(self, x):
+        return np.sum(x != 0)
+
+    def L1(self, x):
+        return np.sum(np.abs(x))
+
+    def quadL1(self, x):
+        return np.sum(np.maximum(np.abs(x), x * x / self.eps))
+
+    def L2(self, x):
+        temp = np.sqrt(np.sum(x**2))
+        return temp
+
+    def L2D(self, x):
+        return np.sum(x**2)
+
+    def AT(self, optD1e, e, eps):
+        return eps * self.L2(optD1e) ** 2 + (0.25 / eps) * self.L2(e) ** 2
+
+class ProximityOperators:
+    def __init__(self, eps):
+        self.eps = eps
+
+    def L0(self, x, tau):
+        return x * (np.abs(x) > np.sqrt(2 * tau))
+
+    def L1(self, x, tau):
+        return x - np.maximum(np.minimum(x, tau), -tau)
+
+    def quadL1(self, x, tau):
+        return np.maximum(
+            0,
+            np.minimum(
+                np.abs(x) - tau,
+                np.maximum(self.eps, np.abs(x) / (tau / (self.eps / 2.0) + 1)),
+            ),
+        ) * np.sign(x)
+
+    def L2D(self, x, tau):
+        return x / (1 + 2 * tau)
+
+    def KLD(self, x, cof, sigma, tau):
+        (x - tau * sigma + np.sqrt(np.abs(x - tau * sigma) ** 2 + 4 * tau * cof)) / 2.0
+
+    def L2(self, x, tau, z):
+        return (x + tau * z) / (1 + tau)
+
+    def L2_restoration(self, x, tau, z, otfA,canal):
+        if canal== 1:
+            temp = (fftpack.fft2(x, axes=(0, 1))+ tau * np.conj(otfA) * fftpack.fft2(z, axes=(0, 1))) / (tau * np.conj(otfA) * otfA + 1)
+            temp = fftpack.ifft2(temp, axes=(0, 1))
+            temp = np.real(temp)
+            return temp
+        elif canal==3:
+            output= np.zeros_like(x)
+            for i in range(3):
+                temp = (fftpack.fft2(x[:,:,i], axes=(0, 1))+ tau * np.conj(otfA) * fftpack.fft2(z[:,:,i], axes=(0, 1))) / (tau * np.conj(otfA) * otfA + 1)
+                temp = fftpack.ifft2(temp, axes=(0, 1))
+                output[:,:,i] = np.real(temp)
+            return output
+    def L1L2(self, e, gamma_1, gamma_2, tau):
+        return (1 / (2 * tau * gamma_2 + 1)) * (
+            e - np.maximum(np.minimum(e, tau * gamma_1), -tau * gamma_1)
+        )
