@@ -23,7 +23,7 @@ class DMS:
         eps=0.2,
         stop_criterion=1e-4,
         MaximumIteration=5000,
-        method="SL-PAM",
+        method="SLPAM",
         noised_image_input=None,
         optD="OptD",
         dk_SLPAM_factor=1e-4,
@@ -46,7 +46,6 @@ class DMS:
         # Image variable
         shape = np.shape(noised_image_input)
         size = np.size(shape)
-
         if size == 2:
             print("Image gray scale")
             self.rows, self.cols = noised_image_input.shape
@@ -58,7 +57,7 @@ class DMS:
                 print('Image is already in float [0,1] \n')
                 self.noised_image_input = np.copy(noised_image_input)
             self.en_SLPAM = np.zeros((self.rows,self.cols,2))
-            self.en_PALM = np.zeros((self.rows,self.cols,2))
+            self.en_PALM = np.ones((self.rows,self.cols,2))
             self.un_SLPAM = self.noised_image_input
             self.un_PALM = self.noised_image_input
         elif size == 3:
@@ -75,10 +74,10 @@ class DMS:
             self.un_PALM = self.noised_image_input
             if edges == 'similar': # all channels RGB have the same contour
                 self.en_SLPAM = np.zeros((self.rows,self.cols,2))
-                self.en_PALM = np.zeros((self.rows,self.cols,2))
+                self.en_PALM = np.ones((self.rows,self.cols,2))
             elif edges == 'distinct':
                 self.en_SLPAM = np.zeros((self.rows,self.cols,2, self.canal))
-                self.en_PALM = np.zeros((self.rows,self.cols,2, self.canal))
+                self.en_PALM = np.ones((self.rows,self.cols,2, self.canal))
 
         self.rowscols = self.rows * self.cols        
         # SL-PAM parameters
@@ -549,10 +548,13 @@ class DMS:
         it = 0
         err = 1.0
         self.Jn_PALM+= [self.energy(self.un_PALM, self.en_PALM, self.noised_image_input)]
- 
-        while (err > self.stop_criterion) and ( it < self.MaximumIteration ):
+        err_relative_x=[]
+        err_relative_e=[]
+        for _ in tqdm(range(self.MaximumIteration)):
+        # while (err > self.stop_criterion) and ( it < self.MaximumIteration ):
             ck, dk = self.norm_ck_dk_opt(method="PALM")
-
+            un_pred= self.un_PALM
+            en_pred= self.en_PALM
             self.un_PALM = self.L_prox(
                 self.un_PALM - (self.beta / ck) * self.S_du(self.un_PALM, self.en_PALM),
                 1 / ck,
@@ -567,16 +569,25 @@ class DMS:
             self.Jn_PALM += [ self.energy(self.un_PALM, self.en_PALM, self.noised_image_input)]
             err = abs(self.Jn_PALM[it + 1] - self.Jn_PALM[it]) / abs( self.Jn_PALM[it + 1] )
             it += 1
-        return self.en_PALM, self.un_PALM, self.Jn_PALM
+            err_relative_x += [np.linalg.norm(self.un_PALM-un_pred)/np.linalg.norm(self.noised_image_input)]
+            err_relative_e += [np.linalg.norm(self.en_PALM-en_pred)/np.linalg.norm(np.ones((self.rows,self.cols,2, self.canal)))]
+            # if err_relative_x[-1] > self.stop_criterion:
+                # break
+        return self.en_PALM, self.un_PALM, self.Jn_PALM,err_relative_x,err_relative_e
 
     def loop_SL_PAM(self):
         err = 1.0
+        err_relative_x=[]
+        err_relative_e=[]
         self.Jn_SLPAM += [self.energy(self.un_SLPAM, self.en_SLPAM, self.noised_image_input)]
         it = 0      
 
         # Main loop
-        while (err > self.stop_criterion) and (it < self.MaximumIteration):  
+        for _ in tqdm(range(self.MaximumIteration)):
+        # while (err > self.stop_criterion) and (it < self.MaximumIteration):  
             ck = self.norm_ck_dk_opt(method="SLPAM")
+            un_pred= self.un_SLPAM
+            en_pred= self.en_SLPAM
             self.un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM), 1 / ck,self.noised_image_input)
             # next_un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM), 1 / ck,self.noised_image_input)
             if self.norm_type == "l1" or self.norm_type == "l1q":
@@ -585,6 +596,10 @@ class DMS:
                 self.en_SLPAM = self.R_prox(over / lower, self.lam / (2 * lower))
                 self.Jn_SLPAM += [self.energy(self.un_SLPAM, self.en_SLPAM, self.noised_image_input)]
                 err = abs(self.Jn_SLPAM[it + 1] - self.Jn_SLPAM[it]) / abs(self.Jn_SLPAM[it])
+
+                # print(np.linalg.norm(self.un_SLPAM-un_pred)/self.noised_image_input)
+                err_relative_x += [np.linalg.norm(self.un_SLPAM-un_pred)/np.linalg.norm(self.noised_image_input)]
+                err_relative_e += [np.linalg.norm(self.en_SLPAM-en_pred)/np.linalg.norm(np.ones((self.rows,self.cols,2, self.canal)))]
             elif self.norm_type == "AT":
                 self.en_SLPAM = (self.en_SLPAM+ 2 * self.beta / (self.dk_SLPAM_factor) * self.optD(self.un_SLPAM) ** 2)
                 e_ravel_0 = self.en_SLPAM[:, :, 0].ravel("C")
@@ -612,7 +627,7 @@ class DMS:
                 err = abs(self.Jn_SLPAM[it + 1] - self.Jn_SLPAM[it]) / abs(self.Jn_SLPAM[it])
                 
             it += 1
-        return self.en_SLPAM,self.un_SLPAM, self.Jn_SLPAM
+        return self.en_SLPAM,self.un_SLPAM, self.Jn_SLPAM,err_relative_x,err_relative_e
 
 
     def process(self):
