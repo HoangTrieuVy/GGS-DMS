@@ -510,14 +510,13 @@ class DMS:
                     ck = self.norm_ck_dk_opt(method="SLPAM")
 
                 self.un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM),1 / ck,self.noised_image_input)
-               
-                self.en_SLPAM = (self.en_SLPAM+ 2 * self.beta / (self.dk_SLPAM_factor) * self.optD(self.un_SLPAM) ** 2)
+                self.en_SLPAM = (self.en_SLPAM+ 2 * self.beta / (self.dk_SLPAM_factor) * np.sum(self.optD(self.un_SLPAM)** 2),axis=3)
                 e_ravel_0 = self.en_SLPAM[:, :, 0].ravel("C")
                 e_ravel_1 = self.en_SLPAM[:, :, 1].ravel("C")
                 e_ravel = np.hstack((e_ravel_0, e_ravel_1))
                 C1 = 1 + (self.lam / (2 * self.eps *(self.dk_SLPAM_factor)))
                 C2 = 2 * self.lam * self.eps / (self.dk_SLPAM_factor)
-                hat = 2 * self.beta / (self.dk_SLPAM_factor) * self.optD(self.un_SLPAM) ** 2
+                hat = 2 * self.beta / (self.dk_SLPAM_factor) * np.sum(self.optD(self.un_SLPAM)** 2,axis=3) 
                 hat0 = hat[:, :, 0].ravel("C")
                 hat1 = hat[:, :, 1].ravel("C")
                 hat_conca = np.hstack((hat0, hat1))
