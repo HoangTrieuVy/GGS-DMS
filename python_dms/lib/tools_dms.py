@@ -12,6 +12,8 @@ from scipy.sparse import csc_matrix
 from scipy.sparse import identity
 from scipy.sparse.linalg import spsolve,lgmres
 import matplotlib.pyplot as plt
+from dms import *
+
 # import cupy as cp
 # from cupyx.scipy.sparse.linalg import spsolve as spsolve_cuda
 # from cupyx.scipy.sparse import csc_matrix as csc_matrix_cuda

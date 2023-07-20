@@ -488,8 +488,8 @@ class DMS:
 
                 iteration += 1
             self.eps = self.eps / 1.5
-            list_u + [self.un_SLPAM]
-            list_e + [self.en_SLPAM]
+            list_u += [self.un_SLPAM]
+            list_e += [self.en_SLPAM]
 
         return self.en_PALM,self.un_PALM,self.Jn_PALM,list_u,list_e
 
@@ -538,8 +538,8 @@ class DMS:
                 if np.isnan(err):
                     break
                 it += 1
-            list_u + [self.un_SLPAM]
-            list_e + [self.en_SLPAM]
+            list_u += [self.un_SLPAM]
+            list_e += [self.en_SLPAM]
             self.eps = self.eps / 1.5
         return self.en_SLPAM,self.un_SLPAM,self.Jn_SLPAM,list_u,list_e
 
