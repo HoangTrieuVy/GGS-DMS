@@ -458,6 +458,8 @@ def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6
 
                     out = test.process()
                     cont_thres = np.ones_like(out[0])*(out[0]>0.5)
+                    cont_thres = np.clip(cont_thres[:,:,0]+cont_thres[:,:,1],0,1)
+#                     print(cont_thres.shape)
                     temp[i,j]    = jaccard(cont_thres,contours_im1)
 
             tab_Jaccard_out[r]  = temp
@@ -472,8 +474,9 @@ def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6
 
             out = test.process()
             cont_thres = np.ones_like(out[0])*(out[0]>0.5)
-
+            cont_thres = np.clip(cont_thres[:,:,0]+cont_thres[:,:,1],0,1)
             print('Round: ',r, ' ',  jaccard(cont_thres,contours_im1),'beta:  ',beta_axis_curr[coord_max_Jaccard_curr[0]],', lam:  ',lambda_axis_curr[coord_max_Jaccard_curr[1]] )
+            print(beta_list[r][-2]-beta_list[r][-1])
             tab_coord_max_Jaccard_out       += [coord_max_Jaccard_curr]
             beta_list += [np.linspace(beta_list[r][coord_max_Jaccard_curr[0]]+(beta_list[r][-2]-beta_list[r][-1]),beta_list[r][coord_max_Jaccard_curr[0]]-(beta_list[r][-2]-beta_list[r][-1]),grid_size)]
             lambda_list += [np.linspace(lambda_list[r][coord_max_Jaccard_curr[1]]-(lambda_list[r][-1]-lambda_list[r][-2]),lambda_list[r][coord_max_Jaccard_curr[1]]+(lambda_list[r][-1]-lambda_list[r][-2]),grid_size)]

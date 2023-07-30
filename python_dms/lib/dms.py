@@ -12,6 +12,7 @@ from scipy.sparse import vstack
 from scipy.sparse import csc_matrix
 from scipy.sparse import identity
 from scipy.sparse.linalg import spsolve,lgmres
+from tqdm import tqdm
 
 class DMS:
     def __init__(
@@ -61,13 +62,13 @@ class DMS:
             self.un_SLPAM = self.noised_image_input
             self.un_PALM = self.noised_image_input
         elif size == 3:
-            print("Color image")
+#             print("Color image")
             self.rows, self.cols, self.canal = noised_image_input.shape
             if np.max(noised_image_input) > 100:
                 print('Convert image to float [0,1] \n')
                 self.noised_image_input = (np.copy(noised_image_input)) / 255.0
             else:
-                print('Image is already in float [0,1] \n')
+#                 print('Image is already in float [0,1] \n')
                 self.noised_image_input = np.copy(noised_image_input)
             self.canal = 3
             self.un_SLPAM = self.noised_image_input
@@ -640,6 +641,86 @@ class DMS:
         elif self.method == "PALM-eps-descent":
             return self.loop_PALM_eps_descent()
 
+def zero_pad(image, shape, position='corner'):
+    """
+    Extends image to a certain size with zeros
+    Parameters
+    ----------
+    image: real 2d `numpy.ndarray`
+        Input image
+    shape: tuple of int
+        Desired output shape of the image
+    position : str, optional
+        The position of the input image in the output one:
+            * 'corner'
+                top-left corner (default)
+            * 'center'
+                centered
+    Returns
+    -------
+    padded_img: real `numpy.ndarray`
+        The zero-padded image
+    """
+    shape = np.asarray(shape, dtype=int)
+    imshape = np.asarray(image.shape, dtype=int)
+
+    if np.alltrue(imshape == shape):
+        return image
+
+    if np.any(shape <= 0):
+        raise ValueError("ZERO_PAD: null or negative shape given")
+
+    dshape = shape - imshape
+    if np.any(dshape < 0):
+        raise ValueError("ZERO_PAD: target size smaller than source one")
+
+    pad_img = np.zeros(shape, dtype=image.dtype)
+
+    idx, idy = np.indices(imshape)
+
+    if position == 'center':
+        if np.any(dshape % 2 != 0):
+            raise ValueError("ZERO_PAD: source and target shapes "
+                             "have different parity.")
+        offx, offy = dshape // 2
+    else:
+        offx, offy = (0, 0)
+
+    pad_img[idx + offx, idy + offy] = image
+
+    return pad_img
+
+def psf2otf(psf, output_shape=None):
+    """
+    Convert a point spread function to the optical transfer function.
+
+    Parameters
+    ----------
+    psf : ndarray
+        The point spread function of the imaging system.
+    output_shape : tuple, optional
+        The shape of the output OTF array. If not provided, the shape of the
+        OTF will be the same as the shape of the input PSF.
+
+    Returns
+    -------
+    otf : ndarray
+        The optical transfer function of the imaging system.
+    """
+    if output_shape is None:
+        output_shape = psf.shape
+
+    # Pad the PSF to the desired output shape
+    padded_psf = np.zeros(output_shape, dtype=np.complex64)
+    padded_psf[:psf.shape[0], :psf.shape[1]] = psf
+
+    # Perform the FFT on the padded PSF
+    otf = np.fft.fftn(padded_psf)
+
+    # Normalize the OTF
+    otf /= np.abs(otf).max()
+
+    return otf
 
 class CreateNorms:
     # def __init__(self):
