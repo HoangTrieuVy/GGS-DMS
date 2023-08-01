@@ -2,7 +2,8 @@ close all;
 clear all;
 
 % Step 1: Specify the folder containing the MAT files
-folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_PSNR/train';
+% folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_PSNR/train';
+folder_path = '../../dataset/BSDS500/data/param_dist_PSNR/train';
 
 % Step 2: Get a list of all files in the specified folder
 file_list = dir(fullfile(folder_path, '*.mat'));
@@ -55,8 +56,8 @@ end
 
 figure(1)
 scatter(log10(lambda_list),log10(beta_list),'filled');
-xlim([log10(min(lambda_list))-1 log10(max(lambda_list))+1]);
-ylim([log10(min(beta_list))-1 log10(max(beta_list))+1]);
+% xlim([log10(min(lambda_list))-1 log10(max(lambda_list))+1]);
+% ylim([log10(min(beta_list))-1 log10(max(beta_list))+1]);
 saveas(gcf, 'BSDS500_train_dist_param_PSNR.png')
 
 

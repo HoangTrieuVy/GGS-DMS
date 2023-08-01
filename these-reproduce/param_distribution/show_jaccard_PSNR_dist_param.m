@@ -1,5 +1,6 @@
 % Step 1: Specify the folder containing the MAT files
-folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_Jaccard/train';
+% folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_Jaccard/train';
+folder_path = '../../dataset/BSDS500/data/param_dist_Jaccard/train';
 
 % Step 2: Get a list of all files in the specified folder
 file_list = dir(fullfile(folder_path, '*.mat'));
@@ -46,7 +47,8 @@ end
 
 
 % Step 1: Specify the folder containing the MAT files
-folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_PSNR/train';
+% folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_PSNR/train';
+folder_path = '../../dataset/BSDS500/data/param_dist_PSNR/train';
 
 % Step 2: Get a list of all files in the specified folder
 file_list = dir(fullfile(folder_path, '*.mat'));
@@ -93,9 +95,14 @@ end
 
 
 figure(1)
-scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),'filled');hold on;
-scatter(log10(lambda_list_PSNR),log10(beta_list_PSNR),'filled');
-% xlim([log10(min(lambda_list))-1 log10(max(lambda_list))+1]);
-% ylim([log10(min(beta_list))-1 log10(max(beta_list))+1]);
-saveas(gcf, 'BSDS500_train_dist_param_PSNR.png')
+scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),  100,'filled');hold on;
+scatter(log10(lambda_list_PSNR),log10(beta_list_PSNR),100,'filled');
+set(gca,'FontSize',30);
+legend('Jaccard','PSNR','FontSize', 30);
+xlabel('\lambda','FontSize', 50)
+ylabel('\beta','FontSize', 50)
+grid on;
+xlim([log10(min([lambda_list_Jaccard,lambda_list_PSNR]))-1 log10(max([lambda_list_Jaccard,lambda_list_PSNR]))+1]);
+ylim([log10(min([beta_list_Jaccard,beta_list_PSNR]))-1 log10(max([beta_list_Jaccard,beta_list_PSNR]))+1]);
+saveas(gcf, 'SLPAM_l1_BSDS500_train_dist_param_PSNR_Jaccard.png')
 
