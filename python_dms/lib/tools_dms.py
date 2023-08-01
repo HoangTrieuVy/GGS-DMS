@@ -369,7 +369,7 @@ def draw_multiresolution(a1,b1,color='Greens',add_text=True,vm=0,vM=1):
         size += size
 
 def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6,scale_type='10',
-                       grid_size=5,max_round=10,objective='Jaccard',maxiter=300,stop_crit=1e-4,method='SLPAM',norm_type='l1',eps=2.,eps_AT_min=0.02,A=None):
+                       grid_size=5,max_round=5,objective='Jaccard',maxiter=300,stop_crit=1e-4,method='SLPAM',norm_type='l1',eps=2.,eps_AT_min=0.02,A=None):
     out= None
     
     if scale_type  =='none':
