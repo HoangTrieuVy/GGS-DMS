@@ -95,8 +95,8 @@ end
 
 
 figure(1)
-scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),  100,'filled');hold on;
-scatter(log10(lambda_list_PSNR),log10(beta_list_PSNR),100,'filled');
+scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),  50,'filled');hold on;
+scatter(log10(lambda_list_PSNR),log10(beta_list_PSNR),50,'filled');
 set(gca,'FontSize',30);
 legend('Jaccard','PSNR','FontSize', 30);
 xlabel('\lambda','FontSize', 50)
