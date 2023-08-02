@@ -13,6 +13,7 @@ from scipy.sparse import identity
 from scipy.sparse.linalg import spsolve,lgmres
 import matplotlib.pyplot as plt
 from dms import *
+from skimage.metrics import structural_similarity as ssim
 
 # import cupy as cp
 # from cupyx.scipy.sparse.linalg import spsolve as spsolve_cuda
@@ -517,38 +518,45 @@ def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6
         elif objective=='SSIM':
             for i in range(grid_size):
                 for j in range(grid_size):
-                    test = DMS(beta=beta_axis_curr[i], lamb=lambda_axis_curr[j], method=method,MaximumIteration=maxiter,
-                               noised_image_input=noised_im1, norm_type=norm_type,stop_criterion=stop_crit, 
-                               dkSLPAM=1e-4,optD='OptD',eps=eps)
+                    test = DMS(  # beta=2.0548170999431815,lamb=0.002058421877614818,
+                        beta = beta_axis_curr[i], lamb = lambda_axis_curr[j],
+                        method = method, MaximumIteration = maxiter,
+                        noised_image_input = noised_im1, norm_type = norm_type, stop_criterion = stop_crit,
+                        dk_SLPAM_factor = 1e-4, optD = 'OptD', eps = eps, eps_AT_min = eps_AT_min, A = A)
 
                     out = test.process()
-                    temp[i,j]    = ssim(out[1],im1)
-                       
+#                     cont_thres = np.ones_like(out[0]) * (out[0] > 0.5)
+                    cont_thres =out[0]
+                    cont_thres = np.clip(cont_thres[:, :, 0] + cont_thres[:, :, 1], 0, 1)
+                    #                     print(cont_thres.shape)
+                    temp[i, j] = ssim(cont_thres, contours_im1)
 
-            # draw_table(temp,beta_axis_curr,lambda_axis_curr,color='Purples',vm=0,vM=1)
-            tab_SSIM_out[r]  = temp
-            tab_SSIM_max    += [np.max(temp)]
+            tab_SSIM_out[r] = temp
+            tab_SSIM_max += [np.max(temp)]
             coord_max_SSIM_curr = np.unravel_index(tab_SSIM_out[r].argmax(), tab_SSIM_out[r].shape)
+
             # Print out best SSIM for current round
-            test = DMS(noised_im1, '', noise_type='Gaussian',blur_type='none',
-                               beta=beta_axis_curr[coord_max_SSIM_curr[0]], lamb=lambda_axis_curr[coord_max_SSIM_curr[1]], 
-                               method=method,MaximumIteration=maxiter ,
-                               noised_image_input=noised_im1, norm_type=norm_type,stop_criterion=stop_crit, 
-                               dkSLPAM=1e-4,optD='OptD',eps=eps)
+            test = DMS(beta = beta_axis_curr[coord_max_SSIM_curr[0]],
+                       lamb = lambda_axis_curr[coord_max_SSIM_curr[1]],
+                       method = method, MaximumIteration = maxiter,
+                       noised_image_input = noised_im1, norm_type = norm_type, stop_criterion = stop_crit,
+                       dk_SLPAM_factor = 1e-4, optD = 'OptD', eps = eps, eps_AT_min = eps_AT_min, A = A)
 
             out = test.process()
-            print('Round: ',r)
-            print('coord_max_SSIM_curr: ',coord_max_SSIM_curr,r'$\beta$: ',beta_axis_curr[coord_max_SSIM_curr[0]],'$\lambda$: ',lambda_axis_curr[coord_max_SSIM_curr[1]])
-            
-            if method != 'PALM-eps-descent' and method != 'SLPAM-eps-descent':
-                print('SSIM: ', ssim(out[1],im1),'CT: ',out[-2],'seconds','   Iter:',len(out[3]))
-            else:
-                print('SSIM: ',  ssim(out[1],im1),'  CT: ',out[-2],'seconds','   Iter:',out[-3])
-            
-            tab_coord_max_SSIM_out       += [coord_max_SSIM_curr]
-            beta_list += [np.linspace(beta_list[r][coord_max_SSIM_curr[0]]+(beta_list[r][-2]-beta_list[r][-1]),beta_list[r][coord_max_SSIM_curr[0]]-(beta_list[r][-2]-beta_list[r][-1]),grid_size)]
-            lambda_list += [np.linspace(lambda_list[r][coord_max_SSIM_curr[1]]-(lambda_list[r][-1]-lambda_list[r][-2]),lambda_list[r][coord_max_SSIM_curr[1]]+(lambda_list[r][-1]-lambda_list[r][-2]),grid_size)]
-            r+= 1
+#             cont_thres = np.ones_like(out[0]) * (out[0] > 0.5)
+            cont_thres = np.clip(cont_thres[:, :, 0] + cont_thres[:, :, 1], 0, 1)
+            print('Round: ', r, ' ', ssim(cont_thres, contours_im1), 'beta:  ',
+                  beta_axis_curr[coord_max_SSIM_curr[0]], ', lam:  ', lambda_axis_curr[coord_max_SSIM_curr[1]])
+            print(beta_list[r][-2] - beta_list[r][-1])
+            tab_coord_max_SSIM_out += [coord_max_SSIM_curr]
+            beta_list += [np.linspace(beta_list[r][coord_max_SSIM_curr[0]] + (beta_list[r][-2] - beta_list[r][-1]),
+                                      beta_list[r][coord_max_SSIM_curr[0]] - (beta_list[r][-2] - beta_list[r][-1]),
+                                      grid_size)]
+            lambda_list += [
+                np.linspace(lambda_list[r][coord_max_SSIM_curr[1]] - (lambda_list[r][-1] - lambda_list[r][-2]),
+                            lambda_list[r][coord_max_SSIM_curr[1]] + (lambda_list[r][-1] - lambda_list[r][-2]),
+                            grid_size)]
+            r += 1
                 
     print('\n\n\n')
     print('Meaningful r (optimum is in the middle)', r)
