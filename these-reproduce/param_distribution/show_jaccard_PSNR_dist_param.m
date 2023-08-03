@@ -95,12 +95,12 @@ end
 
 
 figure(1)
-scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),  50,'filled');hold on;
-scatter(log10(lambda_list_PSNR),log10(beta_list_PSNR),50,'filled');
-set(gca,'FontSize',30);
-legend('Jaccard','PSNR','FontSize', 30);
-xlabel('\lambda','FontSize', 50)
-ylabel('\beta','FontSize', 50)
+scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),  200,'filled');hold on;
+scatter(log10(lambda_list_PSNR),log10(beta_list_PSNR),200,'filled');
+set(gca,'FontSize',60);
+legend('Jaccard','PSNR','FontSize', 60,'location','northwest');
+xlabel('\lambda','FontSize', 60)
+ylabel('\beta','FontSize', 60)
 grid on;
 xlim([log10(min([lambda_list_Jaccard,lambda_list_PSNR]))-1 log10(max([lambda_list_Jaccard,lambda_list_PSNR]))+1]);
 ylim([log10(min([beta_list_Jaccard,beta_list_PSNR]))-1 log10(max([beta_list_Jaccard,beta_list_PSNR]))+1]);
