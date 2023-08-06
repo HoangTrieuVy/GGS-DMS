@@ -539,9 +539,10 @@ class DMS:
                 if np.isnan(err):
                     break
                 it += 1
+            self.noised_image_input=self.un_SLPAM
             list_u += [self.un_SLPAM]
             list_e += [self.en_SLPAM]
-            self.eps = self.eps / 1.5
+            self.eps = self.eps / 1.2
         return self.en_SLPAM,self.un_SLPAM,self.Jn_SLPAM,list_u,list_e
 
     def loop_PALM(self):
