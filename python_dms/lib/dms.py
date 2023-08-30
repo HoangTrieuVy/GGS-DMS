@@ -179,9 +179,9 @@ class DMS:
     def S_de(self, u, e):
         if self.canal == 3:
             if self.edges=='similar':
-                 return -2 * (1 - e) *self.beta* self.S_D(u)
+                 return -2 * (1 - e) * self.S_D(u)
         elif self.canal == 1:
-            return -2 * (1 - e) *self.beta* self.S_D(u)
+            return -2 * (1 - e) * self.S_D(u)
 
     def S_D(self, u):
         if self.canal == 3:
