@@ -1,3 +1,5 @@
+close all;
+clear all;
 % Step 1: Specify the folder containing the MAT files
 % folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_Jaccard/train';
 folder_path = '../../dataset/BSDS500/data/param_dist_Jaccard/train';
@@ -102,7 +104,9 @@ legend('Jaccard','PSNR','FontSize', 60,'location','northwest');
 xlabel('\lambda','FontSize', 60)
 ylabel('\beta','FontSize', 60)
 grid on;
-xlim([log10(min([lambda_list_Jaccard,lambda_list_PSNR]))-1 log10(max([lambda_list_Jaccard,lambda_list_PSNR]))+1]);
-ylim([log10(min([beta_list_Jaccard,beta_list_PSNR]))-1 log10(max([beta_list_Jaccard,beta_list_PSNR]))+1]);
+% xlim([log10(min([lambda_list_Jaccard,lambda_list_PSNR]))-1 log10(max([lambda_list_Jaccard,lambda_list_PSNR]))+1]);
+% ylim([log10(min([beta_list_Jaccard,beta_list_PSNR]))-1 log10(max([beta_list_Jaccard,beta_list_PSNR]))+1]);
+xlim([-4 2]);
+ylim([-1 5]);
 saveas(gcf, 'SLPAM_l1_BSDS500_train_dist_param_PSNR_Jaccard.png')
 
