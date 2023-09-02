@@ -276,14 +276,14 @@ class DMS:
 
     def Dadjoint(self, x):
         if self.canal == 3:
-            y1 = (np.concatenate((x[:, 0, 0, :].reshape(self.rows, 1, 3),x[:, 1:-1, 0, :] - x[:, 0:-2, 0, :],-x[:, -1, 0, :].reshape(self.rows, 1, 3),),axis=1,)/ 2) 
-            y2 = (np.concatenate((x[0, :, 1, :].reshape(1, self.cols, 3),x[1:-1, :, 1, :] - x[:-2, :, 1, :],-x[-1, :, 1, :].reshape(1, self.cols, 3),),axis=0,)/ 2)
+            y1 = (np.concatenate((x[:, 0, 0, :].reshape(self.rows, 1, 3),x[:, 1:-1, 0, :] - x[:, 0:-2, 0, :],-x[:, -2, 0, :].reshape(self.rows, 1, 3),),axis=1,)/ 2) 
+            y2 = (np.concatenate((x[0, :, 1, :].reshape(1, self.cols, 3),x[1:-1, :, 1, :] - x[:-2, :, 1, :],-x[-2, :, 1, :].reshape(1, self.cols, 3),),axis=0,)/ 2)
             y = -y1 - y2
             return y
         elif self.canal == 1:
             # print('XDDDDDDD')
-            y1 = (np.concatenate((x[:, 0, 0].reshape(self.rows, 1), x[:, 1:-1, 0] - x[:, 0:-2, 0],-x[:, -1, 0].reshape(self.rows, 1),),axis=1,)/ 2.0)
-            y2 = ( np.concatenate(( x[0, :, 1].reshape(1, self.cols),x[1:-1, :, 1] - x[:-2, :, 1],-x[-1, :, 1].reshape(1, self.cols),),axis=0,)/ 2.0)
+            y1 = (np.concatenate((x[:, 0, 0].reshape(self.rows, 1), x[:, 1:-1, 0] - x[:, 0:-2, 0],-x[:, -2, 0].reshape(self.rows, 1),),axis=1,)/ 2.0)
+            y2 = ( np.concatenate(( x[0, :, 1].reshape(1, self.cols),x[1:-1, :, 1] - x[:-2, :, 1],-x[-2, :, 1].reshape(1, self.cols),),axis=0,)/ 2.0)
             y = -y1 - y2
             # dh = np.array([[-1,1]])/2.
             # dv = np.array([[-1],[1]])/2.
