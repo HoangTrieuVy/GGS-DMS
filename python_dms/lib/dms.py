@@ -274,7 +274,7 @@ class DMS:
             y[:, :, 1] = (np.concatenate((x[1:, :] - x[0:-1, :], np.zeros((1, self.cols))), axis=0 )/ 2.0)
             return y
 
-    def Dadjoint(self, x):
+    def optDadjoint(self, x):
         if self.canal == 3:
             y1 = (np.concatenate((x[:, 0, 0, :].reshape(self.rows, 1, 3),x[:, 1:-1, 0, :] - x[:, 0:-2, 0, :],-x[:, -2, 0, :].reshape(self.rows, 1, 3),),axis=1,)/ 2) 
             y2 = (np.concatenate((x[0, :, 1, :].reshape(1, self.cols, 3),x[1:-1, :, 1, :] - x[:-2, :, 1, :],-x[-2, :, 1, :].reshape(1, self.cols, 3),),axis=0,)/ 2)
