@@ -442,7 +442,7 @@ def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6
 
             out = test.process()
             # draw_result(restored_image= out[1],contour_detection= out[0])
-            print('Round: ',r,' ',PSNR(out[1],im1))
+            print('Round: ',r,' ',PSNR(out[1],im1),'beta:  ',beta_axis_curr[coord_max_PSNR_curr[0]],', lam:  ',lambda_axis_curr[coord_max_PSNR_curr[1]] )
             tab_coord_max_PSNR_out       += [coord_max_PSNR_curr]           
             beta_list += [np.linspace(beta_list[r][coord_max_PSNR_curr[0]]+(beta_list[r][-2]-beta_list[r][-1]),beta_list[r][coord_max_PSNR_curr[0]]-(beta_list[r][-2]-beta_list[r][-1]),grid_size)]
             lambda_list += [np.linspace(lambda_list[r][coord_max_PSNR_curr[1]]-(lambda_list[r][-1]-lambda_list[r][-2]),lambda_list[r][coord_max_PSNR_curr[1]]+(lambda_list[r][-1]-lambda_list[r][-2]),grid_size)]
@@ -458,7 +458,7 @@ def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6
                                dk_SLPAM_factor=1e-4,optD='OptD',eps=eps,eps_AT_min=eps_AT_min,A=A)
 
                     out = test.process()
-                    cont_thres = np.ones_like(out[0])*(out[0]>0.5)
+                    cont_thres = out[0]#np.ones_like(out[0])*(out[0]>0.5)
                     cont_thres = np.clip(cont_thres[:,:,0]+cont_thres[:,:,1],0,1)
 #                     print(cont_thres.shape)
                     temp[i,j]    = jaccard(cont_thres,contours_im1)

@@ -172,9 +172,9 @@ class DMS:
     def S_du(self, u, e):
         if self.canal == 3:
             if self.edges=='similar':
-                return 2 *self.Dadjoint((np.repeat(((1 - e))[:, :, :, np.newaxis], self.canal, axis=3)** 2* self.optD(u)) )
+                return 2 *self.optDadjoint((np.repeat(((1 - e))[:, :, :, np.newaxis], self.canal, axis=3)** 2* self.optD(u)) )
         elif self.canal == 1:
-            return 2 *self.Dadjoint(self.optD(u)*(1 - e) ** 2)
+            return 2 *self.optDadjoint(self.optD(u)*(1 - e) ** 2)
 
     def S_de(self, u, e):
         if self.canal == 3:
@@ -307,7 +307,7 @@ class DMS:
         xn1 = xn
         while abs(rhok - rhon) / abs(rhok) >= 1e-5:
             xn = xn1 / np.linalg.norm(xn1, "fro")
-            xn1 = 2 * self.Dadjoint(self.optD(xn))
+            xn1 = 2 * self.optDadjoint(self.optD(xn))
             rhon = rhok
             k += 1
             rhok = np.linalg.norm(xn1, "fro")
@@ -329,7 +329,7 @@ class DMS:
             #     rhok = np.linalg.norm(xn1,'fro')
             #     iter+=1
             rhok = 4
-            return 1.01 * self.beta * np.sqrt(rhok) + 1e-8
+            return 2.01 * self.beta * np.sqrt(rhok) + 1e-8
         if method == "PALM":
             #             xn = np.random.rand(*self.image.shape)
             #             rhon = 1 +1e-2
@@ -365,8 +365,8 @@ class DMS:
             rhok_e = 4
 
             return (
-                1.01 *  self.beta * np.sqrt(rhok_u) + 1e-8,
-                1.01 *  self.beta * np.sqrt(rhok_e) + 1e-8,
+                2.01 *  self.beta * np.sqrt(rhok_u) + 1e-8,
+                2.01 *  self.beta * np.sqrt(rhok_e) + 1e-8,
             )
 
     def norm_ck_dk(self, method):
@@ -465,32 +465,44 @@ class DMS:
             
             while (err >= self.stop_criterion) and iteration < self.MaximumIteration:   
                 ck, dk = self.norm_ck_dk_opt(method="PALM")
-                next_un_PALM = self.L_prox(
+                self.un_PALM = self.L_prox(
                     self.un_PALM
                     - (self.beta / ck) * self.S_du(self.un_PALM, self.en_PALM),
                     1 / ck,
                     self.noised_image_input,
                 )
-                next_en_PALM = self.R_prox(
+                self.en_PALM = self.R_prox(
                     self.en_PALM
                     - (self.beta / dk) * self.S_de(self.un_PALM, self.en_PALM),
                     self.lam / dk,
                 )
 
         
-                self.Jn_PALM += [self.energy(next_un_PALM, next_en_PALM, self.noised_image_input)]
+                self.Jn_PALM += [self.energy(self.un_PALM, self.en_PALM, self.noised_image_input)]
                 err = abs(self.Jn_PALM[iteration+1] - self.Jn_PALM[iteration]) / abs(self.Jn_PALM[iteration] + 1e-8)
                 if np.isnan(err):
                     # print('Nan error err')
                     break
-                else:
-                    self.un_PALM = next_un_PALM
-                    self.en_PALM = next_en_PALM
-
+#                 else:
+#                     self.un_PALM = next_un_PALM
+#                     self.en_PALM = next_en_PALM
+                
                 iteration += 1
+              
+            plt.figure()
+            plt.plot(self.Jn_PALM)
+            plt.show()
+#             plt.figure()
+#             plt.imshow(self.en_PALM[:,:,0]+self.en_PALM[:,:,1],cmap='gray_r')
+#             plt.show()
+#             plt.figure()
+#             plt.imshow(self.un_PALM)
+#             plt.show()
+#             self.noised_image_input=self.un_PALM
             self.eps = self.eps / 1.5
-            list_u += [self.un_SLPAM]
-            list_e += [self.en_SLPAM]
+#             self.MaximumIteration = self.MaximumIteration / 1.1
+            list_u += [self.un_PALM]
+            list_e += [self.en_PALM]
 
         return self.en_PALM,self.un_PALM,self.Jn_PALM,list_u,list_e
 
@@ -501,7 +513,7 @@ class DMS:
         list_e = []
         # Main loop
         while self.eps >= self.eps_AT_min: 
-            print(self.eps)
+            print("Epsilon: ", self.eps)
             it = 0
             err = 1
             while (err >= self.stop_criterion and it < self.MaximumIteration):
@@ -539,7 +551,7 @@ class DMS:
                 if np.isnan(err):
                     break
                 it += 1
-            self.noised_image_input=self.un_SLPAM
+#             self.noised_image_input=self.un_SLPAM
             list_u += [self.un_SLPAM]
             list_e += [self.en_SLPAM]
             self.eps = self.eps / 1.2
