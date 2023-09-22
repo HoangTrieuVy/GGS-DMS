@@ -330,6 +330,7 @@ class DMS:
             #     iter+=1
             rhok = 4
             return 2.01 * self.beta * np.sqrt(rhok) + 1e-8
+#             return 2.01 * self.beta * rhok + 1e-8
         if method == "PALM":
             #             xn = np.random.rand(*self.image.shape)
             #             rhon = 1 +1e-2
@@ -368,6 +369,10 @@ class DMS:
                 2.01 *  self.beta * np.sqrt(rhok_u) + 1e-8,
                 2.01 *  self.beta * np.sqrt(rhok_e) + 1e-8,
             )
+#             return (
+#                     2.01 *  self.beta * rhok_u + 1e-8,
+#                     2.01 *  self.beta * rhok_e + 1e-8,
+#                 )
 
     def norm_ck_dk(self, method):
         # Calculate ck first, then dk
@@ -490,16 +495,17 @@ class DMS:
                 iteration += 1
               
             plt.figure()
-            plt.plot(self.Jn_PALM)
+            plt.loglog(self.Jn_PALM)
             plt.show()
-#             plt.figure()
-#             plt.imshow(self.en_PALM[:,:,0]+self.en_PALM[:,:,1],cmap='gray_r')
-#             plt.show()
-#             plt.figure()
-#             plt.imshow(self.un_PALM)
-#             plt.show()
+            plt.figure()
+            plt.imshow(self.en_PALM[:,:,0]+self.en_PALM[:,:,1],cmap='gray_r')
+            plt.show()
+            plt.figure()
+            plt.imshow(self.un_PALM)
+            plt.show()
 #             self.noised_image_input=self.un_PALM
-            self.eps = self.eps / 1.5
+            self.eps = self.eps / 1.2
+#             self.eps = self.eps / 2.0
 #             self.MaximumIteration = self.MaximumIteration / 1.1
             list_u += [self.un_PALM]
             list_e += [self.en_PALM]
@@ -552,6 +558,15 @@ class DMS:
                     break
                 it += 1
 #             self.noised_image_input=self.un_SLPAM
+            plt.figure()
+            plt.loglog(self.Jn_SLPAM)
+            plt.show()
+            plt.figure()
+            plt.imshow(self.en_SLPAM[:,:,0]+self.en_SLPAM[:,:,1],cmap='gray_r')
+            plt.show()
+            plt.figure()
+            plt.imshow(self.un_SLPAM)
+            plt.show()
             list_u += [self.un_SLPAM]
             list_e += [self.en_SLPAM]
             self.eps = self.eps / 1.2

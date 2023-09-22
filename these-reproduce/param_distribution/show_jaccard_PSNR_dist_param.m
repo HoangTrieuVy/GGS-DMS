@@ -1,8 +1,8 @@
 close all;
 clear all;
 % Step 1: Specify the folder containing the MAT files
-% folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_Jaccard/train';
-folder_path = '../../dataset/BSDS500/data/param_dist_Jaccard/train';
+folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_Jaccard_PALM_l1/train';
+% folder_path = '../../dataset/BSDS500/data/param_dist_Jaccard_PALM_l1/train';
 
 % Step 2: Get a list of all files in the specified folder
 file_list = dir(fullfile(folder_path, '*.mat'));
@@ -18,13 +18,13 @@ for i = 1:length(file_list)
     if ~file_list(i).isdir && endsWith(file_name, '.mat')
         try
             load(full_file_path);
-            bmax=3;bmin=-1;lmax=2;lmin=-3;
-            gridsize=5;
+            bmax=2;bmin=-1;lmax=1;lmin=-3;
+            gridsize=4;
             [round,cs] = size(tab_coord_max_Jaccard_out);
             r=1;
             blist= linspace(bmax, bmin, gridsize);
             llist= linspace(lmin, lmax, gridsize);
-            while r<=5   
+            while r<=3   
                 db = blist(1)-blist(2);
                 dl = llist(2)-llist(1);
                 coef_b_op_curr = blist(tab_coord_max_Jaccard_out(r,1)+1);
@@ -49,9 +49,9 @@ end
 
 
 % Step 1: Specify the folder containing the MAT files
-% folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_PSNR/train';
-folder_path = '../../dataset/BSDS500/data/param_dist_PSNR/train';
-
+folder_path = '../../../../Documents/dataset/BSDS500/data/param_dist_PSNR_PALM_l1/train';
+% folder_path = '../../dataset/BSDS500/data/param_dist_PSNR_PALM_l1/train';
+% 
 % Step 2: Get a list of all files in the specified folder
 file_list = dir(fullfile(folder_path, '*.mat'));
 beta_list_PSNR= [];
@@ -66,14 +66,14 @@ for i = 1:length(file_list)
     if ~file_list(i).isdir && endsWith(file_name, '.mat')
         try
             load(full_file_path);
-            bmax=3;bmin=-1;lmax=2;lmin=-3;
-            gridsize=5;
+            bmax=3;bmin=0;lmax=0;lmin=-3;
+            gridsize=4;
 %             [round,cs] = size(tab_coord_max_Jaccard_out);
             [round,cs] = size(tab_coord_max_PSNR_out);
             r=1;
             blist= linspace(bmax, bmin, gridsize);
             llist= linspace(lmin, lmax, gridsize);
-            while r<=5   
+            while r<=4 
                 db = blist(1)-blist(2);
                 dl = llist(2)-llist(1);
                  coef_b_op_curr = blist(tab_coord_max_PSNR_out(r,1)+1);
@@ -95,6 +95,20 @@ for i = 1:length(file_list)
     end
 end
 
+% figure(1)
+% scatter((lambda_list_Jaccard),(beta_list_Jaccard),  200,'filled');hold on;
+% scatter((lambda_list_PSNR),(beta_list_PSNR),200,'filled');
+% set(gca,'FontSize',60);
+% legend('Jaccard','PSNR','FontSize', 60,'location','northwest');
+% xlabel('\lambda','FontSize', 60)
+% ylabel('\beta','FontSize', 60)
+% grid on;
+% % xlim([log10(min([lambda_list_Jaccard,lambda_list_PSNR]))-1 log10(max([lambda_list_Jaccard,lambda_list_PSNR]))+1]);
+% % ylim([log10(min([beta_list_Jaccard,beta_list_PSNR]))-1 log10(max([beta_list_Jaccard,beta_list_PSNR]))+1]);
+% % xlim([-4 2]);
+% % ylim([-1 5]);
+% saveas(gcf, 'SLPAM_l1_BSDS500_train_dist_param_PSNR_Jaccard.png')
+
 
 figure(1)
 scatter(log10(lambda_list_Jaccard),log10(beta_list_Jaccard),  200,'filled');hold on;
@@ -106,7 +120,7 @@ ylabel('\beta','FontSize', 60)
 grid on;
 % xlim([log10(min([lambda_list_Jaccard,lambda_list_PSNR]))-1 log10(max([lambda_list_Jaccard,lambda_list_PSNR]))+1]);
 % ylim([log10(min([beta_list_Jaccard,beta_list_PSNR]))-1 log10(max([beta_list_Jaccard,beta_list_PSNR]))+1]);
-xlim([-4 2]);
-ylim([-1 5]);
-saveas(gcf, 'SLPAM_l1_BSDS500_train_dist_param_PSNR_Jaccard.png')
+% xlim([-4 2]);
+% ylim([-1 5]);
+saveas(gcf, 'PALM_l1_BSDS500_train_dist_param_PSNR_Jaccard.png')
 
