@@ -504,7 +504,7 @@ class DMS:
             plt.imshow(self.un_PALM)
             plt.show()
 #             self.noised_image_input=self.un_PALM
-            self.eps = self.eps / 1.2
+            self.eps = self.eps / 1.4
 #             self.eps = self.eps / 2.0
 #             self.MaximumIteration = self.MaximumIteration / 1.1
             list_u += [self.un_PALM]
@@ -569,7 +569,7 @@ class DMS:
             plt.show()
             list_u += [self.un_SLPAM]
             list_e += [self.en_SLPAM]
-            self.eps = self.eps / 1.2
+            self.eps = self.eps / 1.4
         return self.en_SLPAM,self.un_SLPAM,self.Jn_SLPAM,list_u,list_e
 
     def loop_PALM(self):
