@@ -256,7 +256,7 @@ class DMS:
             return e
 
     def energy(self, u, e, z):
-        return self.L_term(u, z)+ self.beta * self.S_term(u, e)+ self.lam * self.R_term(e)
+        return self.L_term(u, z)+  self.S_term(u, e)+ self.lam * self.R_term(e)
 
     # Difference operator D
     def optD(self, x):
@@ -579,8 +579,10 @@ class DMS:
         err_relative_x=[]
         err_relative_e=[]
         for _ in tqdm(range(self.MaximumIteration)):
-        # while (err > self.stop_criterion) and ( it < self.MaximumIteration ):
-            ck, dk = self.norm_ck_dk_opt(method="PALM")
+#         while (err > self.stop_criterion) and ( it < self.MaximumIteration ):
+#             ck, dk = self.norm_ck_dk_opt(method="PALM")
+            ck=1.02 * self.beta * 2
+            dk= 1.02 * self.beta * 2
             un_pred= self.un_PALM
             en_pred= self.en_PALM
             self.un_PALM = self.L_prox(
@@ -601,7 +603,7 @@ class DMS:
             err_relative_e += [np.linalg.norm(self.en_PALM-en_pred)/np.linalg.norm(np.ones((self.rows,self.cols,2, self.canal)))]
             # if err_relative_x[-1] > self.stop_criterion:
                 # break
-        return self.en_PALM, self.un_PALM, self.Jn_PALM,err_relative_x,err_relative_e
+        return self.en_PALM, self.un_PALM, self.Jn_PALM,err_relative_x,err_relative_e,err
 
     def loop_SL_PAM(self):
         err = 1.0
@@ -613,8 +615,9 @@ class DMS:
         # Main loop
         for _ in tqdm(range(self.MaximumIteration)):
         # while (err > self.stop_criterion) and (it < self.MaximumIteration):  
-            ck = self.norm_ck_dk_opt(method="SLPAM")
+#             ck = self.norm_ck_dk_opt(method="SLPAM")
             un_pred= self.un_SLPAM
+            ck=1.02 * self.beta * 2
             en_pred= self.en_SLPAM
             self.un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM), 1 / ck,self.noised_image_input)
             # next_un_SLPAM = self.L_prox(self.un_SLPAM- (self.beta / ck) * self.S_du(self.un_SLPAM, self.en_SLPAM), 1 / ck,self.noised_image_input)

@@ -428,7 +428,17 @@ def golden_section_map(noised_im1,im1,contours_im1,bmax=5,bmin=-5,lmax=3,lmin=-6
 
                     out = test.process()
                     temp[i,j]   = PSNR(out[1],im1)
-                        
+                    print(beta_axis_curr[i],lambda_axis_curr[j], PSNR(out[1],im1))
+                    fg=plt.figure()
+                    plt.imshow(out[1])
+#                     draw_contour(out[0], "", fig=fg, color="r", threshold=0.5)
+                    plt.show()
+                    plt.figure()
+                    plt.imshow((out[0][:,:,0]+out[0][:,:,1])/2)
+                    plt.show()
+                    plt.figure()
+                    plt.plot(out[2])
+                    plt.show()
             # draw_table(temp,beta_axis_curr,lambda_axis_curr,color='Reds',vm=np.min(temp),vM=np.max(temp))
             tab_PSNR_out[r]    = temp
             tab_PSNR_max    += [np.max(tab_PSNR_out)]
