@@ -275,9 +275,9 @@ def draw_dots_multiresolution(b,a,beta_axis,lambda_axis,name='PSNR'):
                 tz += [a[k+1][2+j,2+i]]
                 ts += [size]
         plt.rcParams.update({'font.size': scale/(k)})
-        cax=plt.scatter(tx,ty,c=tz,s=ts,marker='s',cmap='winter',vmin=vm,vmax=vM)
-    cb=fig.colorbar(cax,ticks=[vm ,vM],orientation='vertical')   
-    cb.ax.tick_params(labelsize=scale*6)
+        plt.scatter(tx,ty,c=tz,s=ts,marker='s',cmap='winter',vmin=vm,vmax=vM)
+    plt.colorbar(ticks=[vm ,vM],orientation='vertical')   
+    plt.tick_params(labelsize=scale*6)
     plt.show()
     
 def draw_multiresolution(a1,b1,color='Greens',add_text=True,vm=0,vM=1):    
