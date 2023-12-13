@@ -217,7 +217,7 @@ class DMS:
             return self.prox.L1(e, tau)
         elif self.norm_type == "l1q":
             return self.prox.quadL1(e, tau)
-        elif self.norm_type == "AT" and (self.method=='SLPAM'):
+        elif self.norm_type == "AT" and (self.method=='PALM' or self.method=='PALM-eps-descent' ) :
             e_ravel_0 = e[:, :, 0].ravel("C")
             e_ravel_1 = e[:, :, 1].ravel("C")
             e_ravel = np.hstack((e_ravel_0, e_ravel_1))
@@ -229,7 +229,7 @@ class DMS:
             e[:, :, 0] = temp[: self.rowscols].reshape(self.rows, self.cols)
             e[:, :, 1] = temp[self.rowscols :].reshape(self.rows, self.cols)
             return e
-        elif self.norm_type == "AT" and (self.method=='PALM' or self.method=='PALM-eps-descent' ):
+        elif self.norm_type == "AT" and (self.method=='SLPAM'):
             # tau is lambda/dk
             C1 = 1 + (tau / (2 * self.eps))
             C2 = 2 * tau * self.eps
